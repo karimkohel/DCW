@@ -8,6 +8,7 @@ TODO:
 		- add the parant node back in the Q (BUT IN A SORTED WAY)
 	- Assign a zero to each left traversal and 1 to each right one
 	- Store the output binary string of the tree travesrsal based on the original text
+	- learn about dat files
 	- Create a function to calculate compression %
 
 DONE:
