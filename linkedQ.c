@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 //////////////////////// LINKED LIST DS ////////////////////
-struct Node{
+typedef struct Node{
 	int value;
 	Node* next;
 };
@@ -133,7 +133,7 @@ Node* remove(Node* l, int item, bool* status){
 //////////////////////// LINKED LIST DS END //////////////////
 ///////////////////// Q DS USING LINKED LIST ///////////////////
 
-struct Queue{
+typedef struct Queue{
 	Node* base;
 	Queue(){
 		base = NULL;
