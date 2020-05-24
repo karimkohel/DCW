@@ -18,13 +18,13 @@ Github link
 #include <stdio.h>
 #include <stdlib.h>
 #include "linkedQ.h"
-#include "general.h"
 #include "tree.h"
+#include "general.h"
 
 
 int main(){
 
-
+	printf("Yo\n");
 
 	return 0;
 }
