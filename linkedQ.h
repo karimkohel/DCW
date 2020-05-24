@@ -3,16 +3,18 @@
 
 //////////////////////// LINKED LIST DS ////////////////////
 struct Node{
-	int value;
+	char value;
+	int freq;
 	Node* next;
 };
 
-Node* insertLast(Node* l, int item){
+Node* insertLast(Node* l, char item, int freq){
 	
 	if(l == NULL){
 		l = (Node*)malloc(sizeof(Node));
 		l->value = item;
-		l->next = NULL;	
+		l->next = NULL;
+		l->freq = freq;
 	}
 	else{
 		Node* it = l;
@@ -22,6 +24,7 @@ Node* insertLast(Node* l, int item){
 
 		Node* tmp = (Node*)malloc(sizeof(Node));
 		tmp->value = item;
+		tmp->freq = freq;
 		tmp->next = NULL;
 
 		it->next = tmp;
@@ -29,23 +32,25 @@ Node* insertLast(Node* l, int item){
 	return l;
 }
 
-Node* insertFirst(Node* l, int item){
+Node* insertFirst(Node* l, char item, int freq){
 
 	if(l == NULL){
 		l = (Node*)malloc(sizeof(Node));
 		l->value = item;
 		l->next = NULL;
+		l->freq = freq;
 	}
 	else{
 		Node* tmp = (Node*)malloc(sizeof(Node));
 		tmp->value = item;
+		l->freq = freq;
 		tmp->next = l;
 		l = tmp;
 	}
 	return l;
 }
 
-Node* removeLast(Node* l, int* item){
+Node* removeLast(Node* l, char* item, int *freq){
 
 	if(l == NULL)
 		return l;
@@ -53,6 +58,7 @@ Node* removeLast(Node* l, int* item){
 
 	if (l->next == NULL){
 		*item = l->value;
+		*freq = l->freq;
 		free(l);
 		l = NULL;
 	}
@@ -62,13 +68,14 @@ Node* removeLast(Node* l, int* item){
 			it = it->next;
 
 		*item = it->next->value;
+		*freq = it->next->freq;
 		free(it->next);
 		it->next = NULL;
 	}
 	return l;
 }
 
-Node* removeFirst(Node* l, int* item){
+Node* removeFirst(Node* l, char* item, int *freq){
 
 	if (l == NULL)
 		return NULL;
@@ -76,6 +83,7 @@ Node* removeFirst(Node* l, int* item){
 
 	if (l->next == NULL){
 		*item = l->value;
+		*freq = l->freq;
 		free(l);
 		l = NULL;
 	}
@@ -89,7 +97,7 @@ Node* removeFirst(Node* l, int* item){
 	return l;
 }
 
-Node* find(Node* l, int item){
+Node* find(Node* l, char item){
 
 	if (l == NULL)
 		return NULL;
@@ -105,7 +113,7 @@ Node* find(Node* l, int item){
 	return NULL;
 }
 
-Node* remove(Node* l, int item, bool* status){
+Node* remove(Node* l, char item, int *freq, bool* status){
 	*status = false;
 	if (l == NULL)
 		return NULL;
@@ -113,7 +121,10 @@ Node* remove(Node* l, int item, bool* status){
 	if(itemToBeRemoved == NULL)
 		return l;
 
+	*freq = itemToBeRemoved->freq;
+
 	if (l == itemToBeRemoved){
+
 		l = l->next;
 		free(itemToBeRemoved);
 	}
@@ -140,7 +151,7 @@ struct Queue{
 	}
 };
 
-bool enqueue(Queue* s, int item){
+bool enqueue(Queue* s, char item){
 	s->base = insertFirst(s->base, item);
 	if (s->base == NULL)
 		return false;
@@ -148,7 +159,7 @@ bool enqueue(Queue* s, int item){
 		return true;
 }
 
-bool dequeue(Queue* s, int* item){
+bool dequeue(Queue* s, char* item){
 
 	if (s->base == NULL)
 		return false;
