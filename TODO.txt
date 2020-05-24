@@ -1,6 +1,6 @@
 TODO:
+	- finish priority Q
 	- Add function for opening the input file
-	- Learn about priority Qs (Heaps too)
 	- Add a function that reads the input file and counts the characters into priority Qs
 	- Prepare characters and their freq to be organized ascendingly in a Q
 	- Adjust tree node to take two data types (char and its freq.)
@@ -16,3 +16,4 @@ DONE:
 	- Start the project Repositary at github.com/karimkohel/DCW
 	- Start the basic C file and configure header files
 	- Configer makefile
+	- Add priority Q header
