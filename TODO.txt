@@ -1,5 +1,7 @@
 TODO:
 	- finish priority Q
+		- count character frequency in the Q
+		- add plus one to each insertion in the Q
 	- Add function for opening the input file
 	- Add a function that reads the input file and counts the characters into priority Qs
 	- Prepare characters and their freq to be organized ascendingly in a Q
