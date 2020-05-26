@@ -1,7 +1,6 @@
 TODO:
-	- finish priority Q
-		- count character frequency in the Q
-		- add plus one to each insertion in the Q
+
+	- test with a test string
 	- Add function for opening the input file
 	- Add a function that reads the input file and counts the characters into priority Qs
 	- Prepare characters and their freq to be organized ascendingly in a Q
@@ -19,3 +18,6 @@ DONE:
 	- Start the basic C file and configure header files
 	- Configer makefile
 	- Add priority Q header
+	- finish priority Q
+		- count character frequency in the Q
+		- add plus one to each insertion in the Q

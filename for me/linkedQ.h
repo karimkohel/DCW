@@ -4,8 +4,8 @@
 //////////////////////// LINKED LIST DS ////////////////////
 
 struct node_t {
-	 char data;
-	 int freq;
+	char data;
+	int freq;
 	node_t *next;
 	node_t *prev;
 };
@@ -36,10 +36,10 @@ node_t *find_node(node_t *head, char vlu){
 
 void print_list(node_t *head){
 	while(head != NULL){
-		printf("%d-",head->data);
+		printf("(%c-%d)->",head->data, head->freq);
 		head = head->next;
 	}
-	printf("\n");
+	printf("NULL\n");
 }
 
 bool insert_first(node_t **head, node_t **tail, char item){
@@ -90,12 +90,13 @@ bool insert_last(node_t **head, node_t **tail, char item){
 	return true;
 }
 
-bool remove_last(node_t **head, node_t **tail, char *element){
+bool remove_last(node_t **head, node_t **tail, char *element, int *freq){
 
 	if(*head == NULL)
 		return false;
 
 	*element = (*tail)->data;
+	*freq = (*tail)->freq;
 
 	if((*head)->next == NULL){
 		free((*head));
@@ -103,19 +104,21 @@ bool remove_last(node_t **head, node_t **tail, char *element){
 		*tail = NULL;
 	}
 	else{
-		*tail = (*tail)->prev; //set the tail to the prev node as to prepare for deleting the last node
-		free((*tail)->next); //deleted the last node
-		(*tail)->next = NULL; //now that thats the last node make the next points to null
+		*tail = (*tail)->prev;
+		free((*tail)->next);
+		(*tail)->next = NULL;
 	}
+
 	return true;
 }
 
-bool remove_first(node_t **head, node_t **tail, char *element){
+bool remove_first(node_t **head, node_t **tail, char *element, int *freq){
 
 	if(*head == NULL)
 		return false;
 
 	*element = (*head)->data;
+	*freq = (*head)->freq;
 
 	if((*head)->next == NULL){
 		free(*head);
@@ -131,6 +134,8 @@ bool remove_first(node_t **head, node_t **tail, char *element){
 }
 
 bool remove_node(node_t **head, node_t **tail, char node_data){
+
+	//Not Applicable for a priority Q
 
 	if(*head == NULL)
 		return false;
@@ -159,22 +164,36 @@ bool remove_node(node_t **head, node_t **tail, char node_data){
 	return true;
 }
 
-void remove_duplicates(node_t **head, node_t **tail){
+void swap_nodes(node_t *node1, node_t *node2){
 
-	node_t *tmp = *head;
-	node_t *inner_tmp;
-	node_t *to_remove;
+	int tmp_freq = node1->freq;
+	char tmp_data = node1->data;
 
-	while(tmp != NULL){
+	node1->data = node2->data;
+	node1->freq = node2->freq;
 
-		inner_tmp = tmp->next;
+	node2->data = tmp_data;
+	node2->freq = tmp_freq;
+}
 
-		to_remove = find_node(inner_tmp, tmp->data);
+void sort_list(node_t *head){
 
-		if(to_remove != NULL)
-			remove_node(head, tail, to_remove->data);
+	node_t *i, *j;
 
-		tmp = tmp->next;
+	for(i=head; i!=NULL; i=i->next){
+		for(j=i->next; j!=NULL; j=j->next){
+			if(i->freq > j->freq)
+				swap_nodes(i, j);
+		}
+	}
+}
+
+void free_list(node_t *head){
+	node_t *tmp;
+	while(head != NULL){
+		tmp = head;
+		head = head->next;
+		free(tmp);
 	}
 }
 
@@ -183,44 +202,45 @@ void remove_duplicates(node_t **head, node_t **tail){
 ///////////////////// Q DS USING LINKED LIST ///////////////////
 
 struct Q_t{
-	node_t* base;
+	node_t *head;
+	node_t *tail;
 
-	Queue(){
-		base = NULL;
+	Q_t(){
+		head = NULL;
+		tail = NULL;
 	}
 };
 
-bool enqueue(Queue* s, char item){
+bool enQ(Q_t* q, char item){
 
-	if(s->base == NULL)
-		return false;
+	node_t *tmp = find_node(q->head, item);
 
-	node_t *tmp = find(s->base, item);
+	if(tmp == NULL){
 
-	if(tmp == NULL)
-		tmp = insertLast(s->base, item, 1); // might change to instertFirst later
-		if(tmp == NULL)
+		if(!insert_first(&(q->head), &(q->tail), item))
 			return false;
-		s->base = tmp;
+	}
 	else{
 		tmp->freq++;
-		//organiseList(s->base); //implement the goddamn function
+		sort_list(q->head);
 	}
 
 	return true;
 }
 
-bool dequeue(Queue* s, char* item, int *freq){
+bool deQ(Q_t* q, char* item, int *freq){
 
-	if(s->base == NULL)
+	if(q->head == NULL)
 		return false;
 
-	int freq;
-	char character;
-
-	node_t *tmp removeFirst(s->base, &character, &freq);
+	if(!remove_first(&(q->head), &(q->tail), item, freq))
+		return false;
 
 	return true;
+}
+
+void freeQ(Q_t *q){
+	free_list(q->head);
 }
 
 ///////////////////// END OF Q DS ///////////////////
