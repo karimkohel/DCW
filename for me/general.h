@@ -1,22 +1,20 @@
 #ifndef GENERAL
 #define GENERAL 
 
-// int count_char(char c){
-	 
-// }
+void load_file_in(Q_t *q, const char *file_name){
 
+	FILE *file = fopen(file_name, "r");
 
-// Read input FILE and load it to memory
-// int get_input(const char *file_name){
+	char c;
+	while((c=fgetc(file)) != EOF){
+		if(!enQ(q, c)){
+			printf("Error in EnQing\n");
+			break;
+		}
+	}
 
-// 	FILE *file = fopen(file_name, "r");
-// 	int total_char = 0;
-// 	char c;
+	fclose(file);
+}
 
-// 	while((c=fgetc(file)) != EOF){
-// 		//how do i count tho...
-// 	}
-
-// }
 
 #endif

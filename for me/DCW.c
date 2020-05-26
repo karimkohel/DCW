@@ -6,25 +6,10 @@
 #include "general.h"
 
 int main(){
-	const char *teststr = "Hello World";
 
-	Q_t mainQ;
-	int len = strlen(teststr);
+	// Q_t mainQ;
 
-	for(int i=0; i<len; i++){
-		if(!enQ(&mainQ, teststr[i])){
-			printf("enQ error\n");
-			break;
-		}
-	}
-
-	int freq;
-	char item;
-	while(deQ(&mainQ, &item, &freq)){
-		printf("(%c-%d)\n", item, freq);
-	}
-
-	printf("Success\n");
+	// load_file_in(&mainQ, "input.txt");
 
 	return 0;
 }
