@@ -209,6 +209,10 @@ struct Q_t{
 		head = NULL;
 		tail = NULL;
 	}
+
+	~Q_t(){
+		free_list(head);
+	}
 };
 
 bool enQ(Q_t* q, char item){
@@ -239,9 +243,6 @@ bool deQ(Q_t* q, char* item, int *freq){
 	return true;
 }
 
-void freeQ(Q_t *q){
-	free_list(q->head);
-}
 
 ///////////////////// END OF Q DS ///////////////////
 
