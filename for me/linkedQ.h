@@ -2,159 +2,179 @@
 #define linkedQ_H
 
 //////////////////////// LINKED LIST DS ////////////////////
-struct node_t{
-	char value;
-	int freq; // aka: priority (but in reverse)
-	node_t* next;
+
+struct node_t {
+	 char data;
+	 int freq;
+	node_t *next;
+	node_t *prev;
 };
 
-node_t* insertLast(node_t* l, char item){
-	
-	if(l == NULL){
-		l = (node_t*)malloc(sizeof(node_t));
-		l->value = item;
-		l->next = NULL;
-		l->freq = 1;
-	}
-	else{
-		node_t* it = l;
+node_t *create_node(char item){
 
-		while(it->next != NULL)
-			it = it->next;
+	node_t *node = (node_t*)malloc(sizeof(node_t));
 
-		node_t* tmp = (node_t*)malloc(sizeof(node_t));
-		tmp->value = item;
-		tmp->freq = 1;
-		tmp->next = NULL;
-
-		it->next = tmp;
-	}
-
-	return l;
-}
-
-node_t* insertFirst(node_t* l, char item){
-
-	if(l == NULL){
-		l = (node_t*)malloc(sizeof(node_t));
-		l->value = item;
-		l->next = NULL;
-		l->freq = 1;
-	}
-	else{
-		node_t* tmp = (node_t*)malloc(sizeof(node_t));
-		tmp->value = item;
-		l->freq = 1;
-		tmp->next = l;
-		l = tmp;
-	}
-	return l;
-}
-
-node_t* removeLast(node_t* l, char* item, int *freq){
-
-	if(l == NULL)
-		return l;
-
-
-	if (l->next == NULL){
-		*item = l->value;
-		*freq = l->freq;
-		free(l);
-		l = NULL;
-	}
-	else{
-		node_t* it = l;
-		while (it->next->next != NULL)
-			it = it->next;
-
-		*item = it->next->value;
-		*freq = it->next->freq;
-		free(it->next);
-		it->next = NULL;
-	}
-	return l;
-}
-
-node_t* removeFirst(node_t* l, char* item, int *freq){
-
-	if (l == NULL)
+	if(node == NULL)
 		return NULL;
 
+	node->data = item;
+	node->freq = 1;
+	node->next = NULL;
+	node->prev = NULL;
 
-	if (l->next == NULL){
-		*item = l->value;
-		*freq = l->freq;
-		free(l);
-		l = NULL;
-	}
-	else{
-		*item = l->value;
-		node_t* tmp = l->next;
-		free(l);
-		l = tmp;
-	}
-
-	return l;
+	return node;
 }
 
-node_t* find(node_t* l, char item, int *freq){
-
-	if (l == NULL)
-		return NULL;
-
-	else{
-		node_t* it = l;
-		while (it != NULL){
-			if (it->value == item)
-				return it;
-			else
-				it = it->next;
-		}
+node_t *find_node(node_t *head, char vlu){
+	while(head != NULL){
+		if(head->data == vlu)
+			return head;
+		head = head->next;
 	}
 	return NULL;
 }
 
-node_t* remove(node_t* l, char item, int *freq, bool* status){
-	*status = false;
-	if (l == NULL)
-		return NULL;
-	node_t* itemToBeRemoved = find(l, item);
-	if(itemToBeRemoved == NULL)
-		return l;
+void print_list(node_t *head){
+	while(head != NULL){
+		printf("%d-",head->data);
+		head = head->next;
+	}
+	printf("\n");
+}
 
-	*freq = itemToBeRemoved->freq;
+bool insert_first(node_t **head, node_t **tail, char item){
 
-	if (l == itemToBeRemoved){
+	//whatever the case, we would need to create a node and since it's
+	// gonna be the first node, the prev ptr surely will be a NULL
+	node_t *tmp = create_node(item);
 
-		l = l->next;
-		free(itemToBeRemoved);
+	if(tmp == NULL)
+		return false;
+
+	tmp->prev = NULL;
+
+	if(*head == NULL){
+		tmp->next = NULL;
+		*tail = tmp;
+	}
+	else
+		tmp->next = *head;
+
+	*head = tmp;
+
+	return true;
+}
+
+bool insert_last(node_t **head, node_t **tail, char item){
+
+	//whatever the case, we would need to create a node and since it's
+	// gonna be the last node, the next ptr surely will be a NULL
+	node_t *tmp = create_node(item);
+
+	if(tmp == NULL)
+		return false;
+
+	tmp->next = NULL;
+
+	if(*head == NULL){
+		tmp->prev = NULL;
+		*head = tmp;
+		*tail = tmp;
 	}
 	else{
-		node_t* it = l;
-		while (it->next != itemToBeRemoved)
-			it = it->next;
-		
-		node_t* tmp = it->next->next;
-		free(itemToBeRemoved);
-		it->next = tmp;
+		tmp->prev = *tail;
+		(*tail)->next = tmp; //needed the paranthesis because pointers are dumb aren't they
+		*tail = tmp;
 	}
-	*status = true;
-	return l;
+
+	return true;
 }
 
-void switchNodes(node_t *node1, node_t *node2){
-	//works only if the two nodes are after each other
-	node_t *tmp = node2;
-	node2->next = node1;
-	node1->next = tmp //need a doubly linked list for that 
+bool remove_last(node_t **head, node_t **tail, char *element){
 
+	if(*head == NULL)
+		return false;
+
+	*element = (*tail)->data;
+
+	if((*head)->next == NULL){
+		free((*head));
+		*head = NULL;
+		*tail = NULL;
+	}
+	else{
+		*tail = (*tail)->prev; //set the tail to the prev node as to prepare for deleting the last node
+		free((*tail)->next); //deleted the last node
+		(*tail)->next = NULL; //now that thats the last node make the next points to null
+	}
+	return true;
 }
 
-void organiseList(node_t *head){
+bool remove_first(node_t **head, node_t **tail, char *element){
 
-	while(head != NULL){
+	if(*head == NULL)
+		return false;
 
+	*element = (*head)->data;
+
+	if((*head)->next == NULL){
+		free(*head);
+		*head = NULL;
+		*tail = NULL;
+	}
+	else{
+		*head = (*head)->next;
+		free((*head)->prev); // same as last function but from the other end
+		(*head)->prev = NULL;
+	}
+	return true;
+}
+
+bool remove_node(node_t **head, node_t **tail, char node_data){
+
+	if(*head == NULL)
+		return false;
+
+	node_t *tmp = find_node((*head), node_data);
+
+	if(tmp == NULL)
+		return false;
+
+	if(tmp->prev == NULL){
+		*head = tmp->next;
+		free((*head)->prev);
+		(*head)->prev = NULL;
+	}
+	else if(tmp->next == NULL){
+		*tail = tmp->prev;
+		free((*tail)->next);
+		(*tail)->next = NULL;
+	}
+	else{
+	
+		(tmp->prev)->next = tmp->next; //the peranthesis here are not a must but i let them be for readability and
+		(tmp->next)->prev = tmp->prev; // to clarify that i am accesing the next and prev nodes's next and prev ptr
+		free(tmp);
+	}
+	return true;
+}
+
+void remove_duplicates(node_t **head, node_t **tail){
+
+	node_t *tmp = *head;
+	node_t *inner_tmp;
+	node_t *to_remove;
+
+	while(tmp != NULL){
+
+		inner_tmp = tmp->next;
+
+		to_remove = find_node(inner_tmp, tmp->data);
+
+		if(to_remove != NULL)
+			remove_node(head, tail, to_remove->data);
+
+		tmp = tmp->next;
 	}
 }
 
@@ -162,8 +182,9 @@ void organiseList(node_t *head){
 //////////////////////// END OF LINKED LIST DS //////////////////
 ///////////////////// Q DS USING LINKED LIST ///////////////////
 
-struct Queue{
+struct Q_t{
 	node_t* base;
+
 	Queue(){
 		base = NULL;
 	}
