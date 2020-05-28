@@ -103,6 +103,21 @@ node_t *join_nodes(node_t *node1, node_t *node2){
 	new_node->right = node2;
 	new_node->freq = (node1->freq) + (node2->freq);
 
+	return new_node;
 }
+
+void printInorder(node_t *root){
+	if(root == NULL)
+		return;
+	printInorder(root->left);
+
+	if(root->data == '\0')
+		printf("%d~", root->freq);
+	else
+		printf("%c~", root->data);
+
+	printInorder(root->right);
+}
+
 
 #endif 

@@ -202,7 +202,7 @@ void free_list(node_t *head){
 	}
 }
 
-bool insert_node_first(**head, node_t *node){
+bool insert_node_first(node_t **head, node_t *node){
 	if((*head) == NULL || node == NULL)
 		return false;
 
@@ -235,7 +235,8 @@ struct Q_t{
 bool enQ(Q_t* q, char item, node_t *node){
 
 	if(node != NULL){
-		insert_node_first(&(q->head), node);
+		if(!insert_node_first(&(q->head), node))
+			return false;
 		sort_list(q->head);
 	}
 	else{

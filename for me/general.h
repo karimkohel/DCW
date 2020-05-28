@@ -13,7 +13,7 @@ void load_file_in(Q_t *q, const char *file_name, int *count){
 	char c;
 	int counter = 0;
 	while((c=fgetc(file)) != EOF){
-		if(!enQ(q, c)){
+		if(!enQ(q, c, NULL)){
 			printf("Error in EnQing\n");
 			break;
 		}
