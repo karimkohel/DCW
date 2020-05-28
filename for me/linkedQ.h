@@ -202,8 +202,17 @@ void free_list(node_t *head){
 	}
 }
 
-bool inser_node(**head, node_t *node){
-	//some shit goes here
+bool insert_node_first(**head, node_t *node){
+	if((*head) == NULL || node == NULL)
+		return false;
+
+	node->prev = NULL;
+
+	node->next = *head;
+
+	*head = node;
+
+	return true;
 }
 
 //////////////////////// END OF LINKED LIST DS //////////////////
@@ -223,26 +232,28 @@ struct Q_t{
 	}
 };
 
-bool enQ(Q_t* q, char item){
+bool enQ(Q_t* q, char item, node_t *node){
 
-	node_t *tmp = find_node(q->head, item);
-
-	// if(item == '\0'){
-	// 	//someshit
-	// 	return true;
-	// }
-	// implement a join function here
-
-	if(tmp == NULL){
-
-		if(!insert_first(&(q->head), &(q->tail), item))
-			return false;
-
+	if(node != NULL){
+		insert_node_first(&(q->head), node);
+		sort_list(q->head);
 	}
 	else{
-		tmp->freq++;
+
+		node_t *tmp = find_node(q->head, item);
+
+		if(tmp == NULL){
+
+			if(!insert_first(&(q->head), &(q->tail), item))
+				return false;
+
+		}
+		else{
+			tmp->freq++;
+			sort_list(q->head);
+		}
+
 	}
-	sort_list(q->head);
 
 	return true;
 }
