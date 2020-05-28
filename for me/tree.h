@@ -1,30 +1,10 @@
 #ifndef TREE
 #define TREE
 
-struct treeNode_t{
-	
-	char data;
-	int freq;
-	treeNode_t *right;
-	treeNode_t *left;
-};
-
-// adjust bellow for huffman
-
-treeNode_t *createNode(char data){
-	treeNode_t *tmp = (treeNode_t *)malloc(sizeof(treeNode_t));
-	if(tmp == NULL)
-		return NULL;
-	tmp->data = data;
-	tmp->right = NULL;
-	tmp->left = NULL;
-	return tmp;
-}
-
-treeNode_t *insert(treeNode_t *root, char data){
+node_t *insert(node_t *root, char data){
 
 	if(root == NULL){
-		root = createNode(data);
+		root = create_node(data);
 		return root;
 	}
 
@@ -36,7 +16,7 @@ treeNode_t *insert(treeNode_t *root, char data){
 	return root;
 }
 
-treeNode_t *find(treeNode_t *root, char data){
+node_t *find(node_t *root, char data){
 
 	if(root == NULL)
 		return NULL;
@@ -49,68 +29,80 @@ treeNode_t *find(treeNode_t *root, char data){
 		return root;
 }
 
-treeNode_t *findMax(treeNode_t *root){
+node_t *find_max(node_t *root){
 
 	if(root == NULL)
 		return NULL;
 
 	if(root->right)
-		return findMax(root->right);
+		return find_max(root->right);
 	else
 		return root;
 }
 
-treeNode_t *findMin(treeNode_t *root){
+node_t *find_min(node_t *root){
 	if(root == NULL)
 		return NULL;
 
 	if(root->left)
-		return findMax(root->left);
+		return find_max(root->left);
 	else
 		return root;
 }
 
-bool leefNode(treeNode_t *node){
+bool leef_node(node_t *node){
 	if((node->right) == NULL && (node->left) == NULL)
 		return true;
 	else
 		return false;
 }
 
-treeNode_t *deleteNode(treeNode_t *node, char data){
+node_t *delete_node(node_t *node, char data){
 
 	if(node == NULL)
 		return NULL;
 
 	if(data > (node->data))
-		node->right = deleteNode(node->right, data);
+		node->right = delete_node(node->right, data);
 	else if(data < (node->data))
-		node->left = deleteNode(node->left, data);
+		node->left = delete_node(node->left, data);
 	else{
 
-		if(leefNode(node)){
+		if(leef_node(node)){
 			free(node);
 			node = NULL;
 			return node;
 		}
 		else if((node->left) == NULL){
-			treeNode_t *tmp = node;
+			node_t *tmp = node;
 			node = node->right;
 			free(tmp);
 		}
 		else if((node->right) == NULL){
-			treeNode_t *tmp = node;
+			node_t *tmp = node;
 			node = node->left;
 			free(tmp);
 		}
 		else{
-			treeNode_t *tmp = findMin(node->right);//or findMax in left Sub-tree
+			node_t *tmp = find_min(node->right);//or find_max in left Sub-tree
 			node->data = tmp->data;
-			node->right = deleteNode(node->right, tmp->data);//to remove duplicate
+			node->right = delete_node(node->right, tmp->data);//to remove duplicate
 		}
 	}
 
 	return node;
+}
+
+node_t *join_nodes(node_t *node1, node_t *node2){
+
+	node_t *new_node = create_node('\0');
+	if(new_node == NULL)
+		return NULL;
+
+	new_node->left = node1;
+	new_node->right = node2;
+	new_node->freq = (node1->freq) + (node2->freq);
+
 }
 
 #endif 

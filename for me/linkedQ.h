@@ -8,6 +8,9 @@ struct node_t {
 	int freq;
 	node_t *next;
 	node_t *prev;
+	node_t *left;
+	node_t *right;
+	// a frankenstein structure
 };
 
 node_t *create_node(char item){
@@ -21,6 +24,8 @@ node_t *create_node(char item){
 	node->freq = 1;
 	node->next = NULL;
 	node->prev = NULL;
+	node->right = NULL;
+	node->left = NULL;
 
 	return node;
 }
@@ -219,15 +224,22 @@ bool enQ(Q_t* q, char item){
 
 	node_t *tmp = find_node(q->head, item);
 
+	// if(item == '\0'){
+	// 	//someshit
+	// 	return true;
+	// }
+	// implement a join function here
+
 	if(tmp == NULL){
 
 		if(!insert_first(&(q->head), &(q->tail), item))
 			return false;
+
 	}
 	else{
 		tmp->freq++;
-		sort_list(q->head);
 	}
+	sort_list(q->head);
 
 	return true;
 }
@@ -242,7 +254,6 @@ bool deQ(Q_t* q, char* item, int *freq){
 
 	return true;
 }
-
 
 ///////////////////// END OF Q DS ///////////////////
 

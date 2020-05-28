@@ -5,11 +5,10 @@
 #include "tree.h"
 #include "general.h"
 
+
 int main(){
 
-	// Q_t mainQ;
+ printf("yo\n");
 
-	// load_file_in(&mainQ, "input.txt");
-
-	return 0;
+    return 0;
 }
