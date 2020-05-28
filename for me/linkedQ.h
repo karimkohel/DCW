@@ -202,6 +202,9 @@ void free_list(node_t *head){
 	}
 }
 
+bool inser_node(**head, node_t *node){
+	//some shit goes here
+}
 
 //////////////////////// END OF LINKED LIST DS //////////////////
 ///////////////////// Q DS USING LINKED LIST ///////////////////
