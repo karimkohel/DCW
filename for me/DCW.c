@@ -19,10 +19,11 @@ int main(){
 
 	while(deQ(&mainQ, &tmp1) && deQ(&mainQ, &tmp2)){
 		tmp3 = join_nodes(tmp1, tmp2);
+		printf("\ttotal-> %d\n", tmp3->freq);
 		state = enQ(&mainQ, '\0', tmp3);
-		printf("\t-> %d- %d\n", state, tmp3->freq);
+		// printf("\t-> %d- %d\n", state, tmp3->freq);
 	}
-	printInorder(tmp3);
+	printPostorder(tmp3);
 	printf("\n");
 
     return 0;

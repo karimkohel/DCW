@@ -122,5 +122,16 @@ void printInorder(node_t *root){
 	printInorder(root->right);
 }
 
+void printPostorder(node_t *root){
+	if(root == NULL)
+		return;
+
+	printPostorder(root->left);
+	printPostorder(root->right);
+	if(root->data == '\0')
+		printf("%d~", root->freq);
+	else
+		printf("%c~", root->data);
+}
 
 #endif 
