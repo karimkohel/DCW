@@ -215,6 +215,10 @@ bool insert_node_first(node_t **head, node_t *node){
 	return true;
 }
 
+bool remove_node_first(node_t **head, node_t **node){
+	//implement
+}
+
 //////////////////////// END OF LINKED LIST DS //////////////////
 ///////////////////// Q DS USING LINKED LIST ///////////////////
 
@@ -259,12 +263,14 @@ bool enQ(Q_t* q, char item, node_t *node){
 	return true;
 }
 
-bool deQ(Q_t* q, char* item, int *freq){
+bool deQ(Q_t* q, node_t **node){
 
-	if(q->head == NULL)
+	if(q->head == NULL){
+		(*node) = NULL;
 		return false;
+	}
 
-	if(!remove_first(&(q->head), &(q->tail), item, freq))
+	if(!remove_node_first(&(q->head), node))
 		return false;
 
 	return true;

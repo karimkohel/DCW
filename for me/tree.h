@@ -107,6 +107,7 @@ node_t *join_nodes(node_t *node1, node_t *node2){
 }
 
 void printInorder(node_t *root){
+
 	if(root == NULL)
 		return;
 	printInorder(root->left);

@@ -17,6 +17,7 @@ void load_file_in(Q_t *q, const char *file_name, int *count){
 			printf("Error in EnQing\n");
 			break;
 		}
+		counter++;
 	}
 
 	*count = counter;
