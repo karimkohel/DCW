@@ -103,6 +103,8 @@ node_t *join_nodes(node_t *node1, node_t *node2){
 	new_node->right = node2;
 	new_node->freq = (node1->freq) + (node2->freq);
 
+	printf("\nfirst-%d, second-%d total-%d\n", (node1->freq), (node2->freq), new_node->freq);
+
 	return new_node;
 }
 

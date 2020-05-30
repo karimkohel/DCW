@@ -171,14 +171,16 @@ bool remove_node(node_t **head, node_t **tail, char node_data){
 
 void swap_nodes(node_t *node1, node_t *node2){
 
-	int tmp_freq = node1->freq;
-	char tmp_data = node1->data;
+	// int tmp_freq = node1->freq;
+	// char tmp_data = node1->data;
 
-	node1->data = node2->data;
-	node1->freq = node2->freq;
+	// node1->data = node2->data;
+	// node1->freq = node2->freq;
 
-	node2->data = tmp_data;
-	node2->freq = tmp_freq;
+	// node2->data = tmp_data;
+	// node2->freq = tmp_freq;
+
+	// // MUST REPAIR
 }
 
 void sort_list(node_t *head){
@@ -216,7 +218,14 @@ bool insert_node_first(node_t **head, node_t *node){
 }
 
 bool remove_node_first(node_t **head, node_t **node){
-	//implement
+	if((*head) == NULL)
+		return false;
+
+	(*node) = (*head);
+
+	(*head) = (*head)->next;
+
+	return true;
 }
 
 //////////////////////// END OF LINKED LIST DS //////////////////
