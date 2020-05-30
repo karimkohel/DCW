@@ -169,28 +169,29 @@ bool remove_node(node_t **head, node_t **tail, char node_data){
 	return true;
 }
 
-void swap_nodes(node_t *node1, node_t *node2){
+void swap_nodes(node_t **head, node_t *node1, node_t *node2){
 
-	// int tmp_freq = node1->freq;
-	// char tmp_data = node1->data;
+	if(node1 == node2)
+		return;
 
-	// node1->data = node2->data;
-	// node1->freq = node2->freq;
+	if(node1->prev != NULL && node2->prev != NULL){
+		node1->prev->next = node2;
+		node2->prev->next = node1;
+	}
+	else if(node1->prev != NULL){
+		
+	}
 
-	// node2->data = tmp_data;
-	// node2->freq = tmp_freq;
-
-	// // MUST REPAIR
 }
 
-void sort_list(node_t *head){
+void sort_list(node_t **head){
 
 	node_t *i, *j;
 
 	for(i=head; i!=NULL; i=i->next){
 		for(j=i->next; j!=NULL; j=j->next){
 			if(i->freq > j->freq)
-				swap_nodes(i, j);
+				swap_nodes(head, i, j);
 		}
 	}
 }
@@ -250,7 +251,7 @@ bool enQ(Q_t* q, char item, node_t *node){
 	if(node != NULL){
 		if(!insert_node_first(&(q->head), node))
 			return false;
-		sort_list(q->head);
+		sort_list(&(q->head));
 	}
 	else{
 
