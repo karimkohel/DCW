@@ -10,16 +10,16 @@ int main(){
 
 	Q_t mainQ;
 	int count;
-	bool state;
 	node_t *tmp1;
 	node_t *tmp2;
 	node_t *tmp3;
 
-	load_file_in(&mainQ, "input.txt", &count);
+	load_file_in(&mainQ, "input2.txt", &count);
+	printf("%d bits\n", count*8);
 
 	while(deQ(&mainQ, &tmp1) && deQ(&mainQ, &tmp2)){
 		tmp3 = join_nodes(tmp1, tmp2);
-		state = enQ(&mainQ, '\0', tmp3);
+		enQ(&mainQ, '\0', tmp3);
 	}
 	printPostorder(tmp3);
 	printf("\n");

@@ -108,6 +108,10 @@ node_t *join_nodes(node_t *node1, node_t *node2){
 	return new_node;
 }
 
+// void get_codes_from_tree(node_t *root){
+	
+// }
+
 void printInorder(node_t *root){
 
 	if(root == NULL)
@@ -129,9 +133,9 @@ void printPostorder(node_t *root){
 	printPostorder(root->left);
 	printPostorder(root->right);
 	if(root->data == '\0')
-		printf("%d~", root->freq);
+		printf("(%d)~", root->freq);
 	else
-		printf("%c~", root->data);
+		printf("[%c]~", root->data);
 }
 
 #endif 
