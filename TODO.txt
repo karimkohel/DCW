@@ -1,9 +1,6 @@
 TODO:
 
 	- IMPLIMENT THE ALGORITHM(Loop or Recurse or DIE)
-		- a join function in the enQ
-		- Use the first two nodes in the sorted Q and join them making their parent the sum of their Freq.
-		- add the parant node back in the Q (BUT IN A SORTED WAY)
 	- Assign a zero to each left traversal and 1 to each right one
 	- Store the output binary string of the tree travesrsal based on the original text
 	- learn about dat files
@@ -22,3 +19,6 @@ DONE:
 	- Add a function that reads the input file and counts the characters into priority Qs
 	- Prepare characters and their freq to be organized ascendingly in a Q
 	- Adjust tree node to take two data types (char and its freq.)
+	- a join function in the enQ
+	- Use the first two nodes in the sorted Q and join them making their parent the sum of their Freq.
+	- add the parant node back in the Q (BUT IN A SORTED WAY)
