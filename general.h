@@ -39,7 +39,7 @@ void load_file_in(Q_t *q, const char *file_name, int *count){
 // }
 
 void encode(node_t *node, char code[], char *codes_table[]){
-	if(!node)
+	if(node == NULL)
 		return; // base case for children of leaf nodes
 
 	if(leaf_node(node))
