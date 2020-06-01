@@ -38,6 +38,26 @@ void load_file_in(Q_t *q, const char *file_name, int *count){
 //     return sb.st_size;
 // }
 
+char *strcat2(char *str1, const char *str2){
+	int len1 = strlen(str1);
+	int len2 = strlen(str2);
+	int len3 = len1+len2+1;
+
+	char *str = (char *)malloc(sizeof(char)*len3);
+	int i;
+
+	for(i=0; i<len1; i++){
+		str[i] = str1[i];
+	}
+	for(int j=0;j<len2; j++, ++i){
+		str[i] = str2[j];
+	}
+	i++;
+	str[i] = '\0';
+
+	return str;
+}
+
 void encode(node_t *node, char code[], char *codes_table[]){
 	if(node == NULL)
 		return; // base case for children of leaf nodes
@@ -45,9 +65,9 @@ void encode(node_t *node, char code[], char *codes_table[]){
 	if(leaf_node(node))
 		codes_table[((int)node->data)] = code;
 
-	char *code2 = code;
-	encode(node->right, strcat(code, "1"), codes_table);
-	encode(node->left, strcat(code2, "0"), codes_table);
+
+	encode(node->left, strcat2(code, "0"), codes_table);
+	encode(node->right, strcat2(code, "1"), codes_table);
 }
 
 //function that is responsible for getting all huffman codes from a huffman tree

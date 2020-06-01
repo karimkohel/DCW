@@ -28,21 +28,10 @@ int main(){
 	char *table[TABLESIZE];
 	init_table(table);
 
-	// encode(tmp3, "", table);
-	char *v = "01";
-	strcat(v,"1");
-	table[((int)'c')] = v;
-	table[((int)'e')] = "1010";
-	table[((int)'t')] = "1010";
-	table[((int)'6')] = "1010";
-	table[((int)'8')] = "1010";
-	table[((int)'1')] = "1010";
-	table[((int)'d')] = "1010";
-	table[((int)'b')] = "1010";
-	table[((int)'/')] = "1010";
+	char tmp_code[10] = "";
+	encode(tmp3, tmp_code, table);
 
 	print_table(table);
-
 
     return 0;
 }

@@ -176,12 +176,19 @@ void swap_nodes(node_t *node1, node_t *node2){
 
 	char tmp_data = node1->data;
 	int tmp_freq = node1->freq;
+	node_t *right_tmp = node1->right;
+	node_t *left_tmp = node1->left;
 
 	 node1->data = node2->data;
 	 node1->freq = node2->freq;
+	 node1->left = node2->left;
+	 node1->right = node2->right;
 
 	 node2->data = tmp_data;
 	 node2->freq = tmp_freq;
+	 node2->left = left_tmp;
+	 node2->right = right_tmp;
+
 }
 
 void sort_list(node_t *head){

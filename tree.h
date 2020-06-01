@@ -1,13 +1,13 @@
 #ifndef TREE
 #define TREE
 
-// void delete_node()//pass
 
 bool leaf_node(node_t *node){
-	if((node->right) == NULL && (node->left) == NULL)
+	if(node->right == NULL && node->left == NULL)
 		return true;
-	else
+	else 
 		return false;
+
 }
 
 node_t *join_nodes(node_t *node1, node_t *node2){
@@ -19,6 +19,7 @@ node_t *join_nodes(node_t *node1, node_t *node2){
 	new_node->left = node1;
 	new_node->right = node2;
 	new_node->freq = (node1->freq) + (node2->freq);
+	new_node->data = '\0';
 
 	return new_node;
 }
