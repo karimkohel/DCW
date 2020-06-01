@@ -31,7 +31,7 @@ int main(){
 	char tmp_code[10] = "";
 	encode(tmp3, tmp_code, table);
 
-	print_table(table);
+	
 
     return 0;
 }

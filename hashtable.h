@@ -1,7 +1,7 @@
 #ifndef HASHTABLE
 #define HASHTABLE
 
-#define TABLESIZE 150
+#define TABLESIZE 255
 
 void init_table(char *table[]){
 
