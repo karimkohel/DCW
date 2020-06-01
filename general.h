@@ -38,31 +38,26 @@ void load_file_in(Q_t *q, const char *file_name, int *count){
 //     return sb.st_size;
 // }
 
+void encode(node_t *node, char code[], char *codes_table[]){
+	if(!node)
+		return; // base case for children of leaf nodes
 
-void encode(node_t *tree, node_t **head, node_t **tail, char code[]){
+	if(leaf_node(node))
+		codes_table[((int)node->data)] = code;
 
-	if(!tree)
-		return; // exit case for the nodes after the leafnodes
-
-	if(leaf_node(tree)){
-		insert_first(head, tail, )
-	}
+	char *code2 = code;
+	encode(node->right, strcat(code, "1"), codes_table);
+	encode(node->left, strcat(code2, "0"), codes_table);
 }
 
 //function that is responsible for getting all huffman codes from a huffman tree
 // this function will be documented as it won't be self explanatory enough (because it's probably ugly)
 // sorry for the spaghetti code
-bool get_codes(node_t **head, node_t *tree){
+// bool get_codes(char *codes_table[], node_t *tree){
 
-	if((*head) != NULL)
-		return false; // we need an empty list to start
-
-	node_t *tmp_head = NULL;
-	node_t *tmp_tail = NULL;
-
-	encode(tree, (&tmp), (&tmp_tail), str);
-
-}
+// 	encode(tree, "",codes_table);
+// 	return true;
+// }
 
 
 #endif

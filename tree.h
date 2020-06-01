@@ -3,7 +3,7 @@
 
 // void delete_node()//pass
 
-bool leef_node(node_t *node){
+bool leaf_node(node_t *node){
 	if((node->right) == NULL && (node->left) == NULL)
 		return true;
 	else
@@ -22,24 +22,6 @@ node_t *join_nodes(node_t *node1, node_t *node2){
 
 	return new_node;
 }
-
-// // void get_codes_from_tree(node_t *root){
-	
-// // }
-
-// char *encode_tree(node_t *node, char code[]){
-
-// 	if(leef_node(node)){
-// 		delete_node(node);
-// 		return code;
-// 	}
-
-// 	char *tmp = code;
-// 	encode_tree(node->left, strcat(code, "0"));
-// 	encode_tree(node->right, strcat(tmp, "1"));
-// }
-
-
 
 void printInorder(node_t *root){
 

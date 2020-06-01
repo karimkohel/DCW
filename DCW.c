@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "hashtable.h"
 #include "linkedQ.h"
 #include "tree.h"
 #include "general.h"
@@ -23,6 +24,14 @@ int main(){
 	}
 	printPostorder(tmp3);
 	printf("\n");
+
+	char *table[TABLESIZE];
+	init_table(table);
+
+	
+
+	print_table(table);
+
 
     return 0;
 }
