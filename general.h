@@ -1,14 +1,11 @@
 #ifndef GENERAL
 #define GENERAL
 
-void greet_and_help(){
-	printf("===== Hello and welcome to the DCW =====\n\n");
-	printf("- Loading in the file\n");
+void greet(){
+	printf("\n===== Hello and welcome to the DCW =====\n\n");
 }
 
-void load_file_in(Q_t *q, const char *file_name, int *count){
-
-	FILE *file = fopen(file_name, "r");
+void load_file_in(Q_t *q, FILE *file, int *count){
 
 	char c;
 	int counter = 0;
@@ -21,22 +18,8 @@ void load_file_in(Q_t *q, const char *file_name, int *count){
 	}
 
 	*count = counter;
-	fclose(file);
-}
 
-// //plagiarized function do not use
-// #include <errno.h>
-// #include <string.h>
-// #include <sys/stat.h>
-// static unsigned get_file_size (const char * file_name){
-//     struct stat sb;
-//     if (stat (file_name, & sb) != 0) {
-//         fprintf (stderr, "'stat' failed for '%s': %s.\n",
-//                  file_name, strerror (errno));
-//         exit (EXIT_FAILURE);
-//     }
-//     return sb.st_size;
-// }
+}
 
 char *strcat2(char *str1, const char *str2){
 	int len1 = strlen(str1);
@@ -70,14 +53,33 @@ void encode(node_t *node, char code[], char *codes_table[]){
 	encode(node->right, strcat2(code, "1"), codes_table);
 }
 
-//function that is responsible for getting all huffman codes from a huffman tree
-// this function will be documented as it won't be self explanatory enough (because it's probably ugly)
-// sorry for the spaghetti code
-// bool get_codes(char *codes_table[], node_t *tree){
+node_t *load_in_tree(Q_t *q){
 
-// 	encode(tree, "",codes_table);
-// 	return true;
-// }
+	node_t *tmp_node1;
+	node_t *tmp_node2;
+	node_t *joined_node;
 
+	while(deQ(q, &tmp_node1) && deQ(q, &tmp_node2)){
+		joined_node = join_nodes(tmp_node1, tmp_node2);
+		enQ(q, '\0', joined_node);
+	}
+	printPostorder(joined_node);
+	printf("\n");
+	return joined_node;
+}
+
+char *compress(FILE *file, int count, char *table[]){
+
+	fseek(file, 0, SEEK_SET );
+
+	char c;
+	char *str = (char *)malloc(sizeof(char)*count*20);
+	int intc;
+	while((c=fgetc(file)) != EOF){
+		intc = (int)c;
+		strcat(str, table[intc]);
+	}
+	return str;
+}
 
 #endif

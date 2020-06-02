@@ -1,37 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "hashtable.h"
 #include "linkedQ.h"
 #include "tree.h"
 #include "general.h"
-
+#include "hashtable.h"
 
 int main(){
 
-	Q_t mainQ;
+	Q_t q;
 	int count;
-	node_t *tmp1;
-	node_t *tmp2;
-	node_t *tmp3;
+	node_t *root;
+	char *code_table[TABLESIZE];
+	FILE *file = fopen("input.txt", "r");
 
-	load_file_in(&mainQ, "input2.txt", &count);
-	printf("%d bits\n", count*8);
+	load_file_in(&q, file, &count);
 
-	while(deQ(&mainQ, &tmp1) && deQ(&mainQ, &tmp2)){
-		tmp3 = join_nodes(tmp1, tmp2);
-		enQ(&mainQ, '\0', tmp3);
-	}
-	printPostorder(tmp3);
-	printf("\n");
+	greet();
 
-	char *table[TABLESIZE];
-	init_table(table);
+	printf("Loaded file in\n\n");
 
-	char tmp_code[10] = "";
-	encode(tmp3, tmp_code, table);
+	root = load_in_tree(&q);
 
-	
+	get_codes(root, code_table);
 
+	printf("Compressing\n");
+
+	char *compressed = compress(file, count, code_table);
+
+	printf("%s\n", compressed);
+
+	free(compressed);
+	fclose(file);
     return 0;
 }

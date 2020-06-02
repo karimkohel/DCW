@@ -1,7 +1,7 @@
 #ifndef HASHTABLE
 #define HASHTABLE
 
-#define TABLESIZE 255
+#define TABLESIZE 256
 
 void init_table(char *table[]){
 
@@ -17,6 +17,16 @@ void print_table(char *table[]){
 		else
 			printf("%d - %s\n", i, table[i]);
 	}
+}
+
+void get_codes(node_t *root, char *table[]){
+	
+	init_table(table);
+
+	char tmp_code[50] = "";
+	encode(root, tmp_code, table);
+
+	print_table(table);
 }
 
 #endif
