@@ -69,7 +69,7 @@ node_t *load_in_tree(Q_t *q){
 
 char *compress(FILE *file, int count, char *table[]){
 
-	fseek(file, 0, SEEK_SET );
+	fseek(file, 0, SEEK_SET); //(CRDTS)// got the seek function from geeksforgeeks
 
 	char c;
 	char *str = (char *)malloc(sizeof(char)*count*20);
@@ -90,7 +90,7 @@ void write_file(char *str){
 		strncpy(tmp, str, 8);
 		c = strtol(tmp, 0,2);
 		str = str + 8;
-		printf("%s=%c, ", tmp, c);
+		printf("%s, ", tmp);
 	}
 	printf("\ni = %d and strlen = %d\n",i, len);
 }
