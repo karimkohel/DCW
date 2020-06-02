@@ -7,7 +7,6 @@ bool leaf_node(node_t *node){
 		return true;
 	else 
 		return false;
-
 }
 
 node_t *join_nodes(node_t *node1, node_t *node2){

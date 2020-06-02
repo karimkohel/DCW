@@ -1,8 +1,25 @@
 #ifndef GENERAL
 #define GENERAL
 
+#define MARKER '\0';
+
 void greet(){
 	printf("\n===== Hello and welcome to the DCW =====\n\n");
+	printf("What do you need to do today?\n");
+	printf("-1- Compress\n");
+	printf("-2- Decompress\n");
+	printf("$ ");
+}
+
+bool get_input(){
+	int i;
+
+	do
+		scanf("%d", &i);
+	while(i != 1 || i != 2)
+
+	if(i == 1) return true;
+	else return false;
 }
 
 void load_file_in(Q_t *q, FILE *file, int *count){
@@ -21,6 +38,8 @@ void load_file_in(Q_t *q, FILE *file, int *count){
 }
 
 char *strcat2(char *str1, const char *str2){
+	// the default strcat was causing some problems that i did't feel like looking into so i made my own
+	// (it's WET code i know but i don't do that much often)
 	int len1 = strlen(str1);
 	int len2 = strlen(str2);
 	int len3 = len1+len2+1;
@@ -40,7 +59,7 @@ char *strcat2(char *str1, const char *str2){
 	return str;
 }
 
-void encode(node_t *node, char code[], char *codes_table[]){
+void encode_tree(node_t *node, char code[], char *codes_table[]){
 	if(node == NULL)
 		return; // base case for children of leaf nodes
 
@@ -48,8 +67,18 @@ void encode(node_t *node, char code[], char *codes_table[]){
 		codes_table[((int)node->data)] = code;
 
 
-	encode(node->left, strcat2(code, "0"), codes_table);
-	encode(node->right, strcat2(code, "1"), codes_table);
+	encode_tree(node->left, strcat2(code, "0"), codes_table);
+	encode_tree(node->right, strcat2(code, "1"), codes_table);
+}
+
+void get_codes(node_t *root, char *table[]){
+
+	init_table(table);
+
+	char tmp_code[50] = "";
+	encode_tree(root, tmp_code, table);
+
+	// print_table(table);
 }
 
 node_t *load_in_tree(Q_t *q){
@@ -67,12 +96,12 @@ node_t *load_in_tree(Q_t *q){
 	return joined_node;
 }
 
-char *compress(FILE *file, int count, char *table[]){
+char *encode_file(FILE *file, int count, char *table[]){
 
-	fseek(file, 0, SEEK_SET); //(CRDTS)// got the seek function from geeksforgeeks
+	fseek(file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
 
 	char c;
-	char *str = (char *)malloc(sizeof(char)*count*20);
+	char *str = (char *)malloc(sizeof(char)*count*10);
 	int intc;
 	while((c=fgetc(file)) != EOF){
 		intc = (int)c;
@@ -82,17 +111,43 @@ char *compress(FILE *file, int count, char *table[]){
 }
 
 void write_file(char *str){
+	FILE *fp = fopen("output.txt", "w");
 	char tmp[8];
-	int i;
 	int len = strlen(str);
 	char c;
-	for(i=0; i<(len/8)+1; i++){
+	for(int i=0; i<(len/8); i++){
 		strncpy(tmp, str, 8);
 		c = strtol(tmp, 0,2);
 		str = str + 8;
-		printf("%s, ", tmp);
+		fputc(c, fp);
 	}
-	printf("\ni = %d and strlen = %d\n",i, len);
+	fclose(fp);
 }
+
+void serialize(node_t *root, FILE *file){
+	//(CRDTS)//got the function from geeksforgeeks.org
+ 
+    if (root == NULL){ 
+        fprintf(file, "%c %d ", MARKER, MARKER); 
+        return; 
+    } 
+  
+    fprintf(file, "%c %d ", root->data, root->freq); 
+    serialize(root->left, file); 
+    serialize(root->right, file);
+}
+
+void deserialize(node_t *root, FILE *file) {
+	//(CRDTS)//got the function from geeksforgeeks.org
+ 
+    int val;
+    char c;
+    if( !fscanf(file, "%c %d ", &c, &val) || val == MARKER)
+       return;
+   
+    root = new_node(c, val); 
+    deserialize(root->left, file); 
+    deserialize(root->right, file); 
+} 
 
 #endif

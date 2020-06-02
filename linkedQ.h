@@ -13,6 +13,23 @@ struct node_t {
 	// a frankenstein structure
 };
 
+node_t *new_node(char item, int freq){
+
+	node_t *node = (node_t*)malloc(sizeof(node_t));
+
+	if(node == NULL)
+		return NULL;
+
+	node->data = item;
+	node->freq = freq;
+	node->next = NULL;
+	node->prev = NULL;
+	node->right = NULL;
+	node->left = NULL;
+
+	return node;
+}
+
 node_t *create_node(char item){
 
 	node_t *node = (node_t*)malloc(sizeof(node_t));
@@ -188,7 +205,6 @@ void swap_nodes(node_t *node1, node_t *node2){
 	 node2->freq = tmp_freq;
 	 node2->left = left_tmp;
 	 node2->right = right_tmp;
-
 }
 
 void sort_list(node_t *head){

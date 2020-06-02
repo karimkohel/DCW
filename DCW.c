@@ -3,37 +3,21 @@
 #include <string.h>
 #include "linkedQ.h"
 #include "tree.h"
-#include "general.h"
 #include "hashtable.h"
+#include "general.h"
+#include "main.h"
 
 int main(){
 
-	Q_t q;
-	int count;
-	node_t *root;
-	char *code_table[TABLESIZE];
-	FILE *file = fopen("input.txt", "r");
-
-	load_file_in(&q, file, &count);
-
 	greet();
 
-	printf("Loaded file in\n\n");
+	bool wanna_compress = get_input();
 
-	root = load_in_tree(&q);
+	if(wanna_compress)
+		compress("input.txt");
+	else{
+		//pass
+	}
 
-	get_codes(root, code_table);
-
-	printf("Compressing\n");
-
-	char *compressed = compress(file, count, code_table);
-
-	printf("%s\n", compressed);
-
-
-	write_file(compressed);
-
-	free(compressed);
-	fclose(file);
     return 0;
 }
