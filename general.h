@@ -16,7 +16,7 @@ bool get_input(){
 
 	do
 		scanf("%d", &i);
-	while(i != 1 || i != 2)
+	while(i != 1 || i != 2);
 
 	if(i == 1) return true;
 	else return false;
@@ -125,29 +125,29 @@ void write_file(char *str){
 }
 
 void serialize(node_t *root, FILE *file){
-	//(CRDTS)//got the function from geeksforgeeks.org
+	//(CRDTS)//got the function recursive idea from geeksforgeeks.org
  
     if (root == NULL){ 
-        fprintf(file, "%c %d ", MARKER, MARKER); 
+        // fwrite(root, sizeof(node_t), 1, file); need to come back to this
         return; 
     } 
   
-    fprintf(file, "%c %d ", root->data, root->freq); 
+    fwrite(root, sizeof(node_t), 1, file); 
     serialize(root->left, file); 
     serialize(root->right, file);
 }
 
-void deserialize(node_t *root, FILE *file) {
-	//(CRDTS)//got the function from geeksforgeeks.org
- 
-    int val;
-    char c;
-    if( !fscanf(file, "%c %d ", &c, &val) || val == MARKER)
-       return;
+// void deserialize(node_t *root, FILE *file) {
+// 	//(CRDTS)//got the function ecursive idea from geeksforgeeks.org
+
+//     int val;
+//     char c;
+//     if( !fscanf(file, "%c %d ", &c, &val) || val == MARKER)
+//        return;
    
-    root = new_node(c, val); 
-    deserialize(root->left, file); 
-    deserialize(root->right, file); 
-} 
+//     root = new_node(c, val); 
+//     deserialize(root->left, file); 
+//     deserialize(root->right, file); 
+// } 
 
 #endif

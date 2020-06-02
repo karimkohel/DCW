@@ -8,7 +8,7 @@ void compress(const char *file_name){
 	node_t *tree_root;
 	char *code_table[TABLESIZE];
 	FILE *file = fopen(file_name, "r");
-	FILE *fp_tree = fopen("codes.dat", "w");
+	FILE *fp_tree = fopen("codes.dat", "wb");
 
 
 	load_file_in(&q, file, &count);

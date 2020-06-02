@@ -11,13 +11,13 @@ int main(){
 
 	greet();
 
-	bool wanna_compress = get_input();
+	// bool wanna_compress = get_input();
 
-	if(wanna_compress)
+	// if(false)
 		compress("input.txt");
-	else{
-		//pass
-	}
+	// else{
+	// 	FILE *file = fopen("code.dat", "rb");
+	// }
 
     return 0;
 }
