@@ -18,7 +18,6 @@ void load_file_in(Q_t *q, FILE *file, int *count){
 	}
 
 	*count = counter;
-
 }
 
 char *strcat2(char *str1, const char *str2){
@@ -80,6 +79,20 @@ char *compress(FILE *file, int count, char *table[]){
 		strcat(str, table[intc]);
 	}
 	return str;
+}
+
+void write_file(char *str){
+	char tmp[8];
+	int i;
+	int len = strlen(str);
+	char c;
+	for(i=0; i<(len/8)+1; i++){
+		strncpy(tmp, str, 8);
+		c = strtol(tmp, 0,2);
+		str = str + 8;
+		printf("%s=%c, ", tmp, c);
+	}
+	printf("\ni = %d and strlen = %d\n",i, len);
 }
 
 #endif

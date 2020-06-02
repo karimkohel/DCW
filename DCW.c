@@ -30,6 +30,9 @@ int main(){
 
 	printf("%s\n", compressed);
 
+
+	write_file(compressed);
+
 	free(compressed);
 	fclose(file);
     return 0;
