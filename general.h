@@ -126,6 +126,7 @@ void write_file(char *str){
 
 void serialize(node_t *root, FILE *file){
 	//(CRDTS)//got the function recursive idea from geeksforgeeks.org
+	// but was edited heavily
  
     if (root == NULL){ 
         // fwrite(root, sizeof(node_t), 1, file); need to come back to this
@@ -137,17 +138,26 @@ void serialize(node_t *root, FILE *file){
     serialize(root->right, file);
 }
 
-// void deserialize(node_t *root, FILE *file) {
-// 	//(CRDTS)//got the function ecursive idea from geeksforgeeks.org
+void deserialize(node_t *root, FILE *file) {
+	//(CRDTS)//got the function ecursive idea from geeksforgeeks.org
+	// but was edited heavily
+	fread(root, sizeof(node_t), 1, file);
 
-//     int val;
-//     char c;
-//     if( !fscanf(file, "%c %d ", &c, &val) || val == MARKER)
-//        return;
-   
-//     root = new_node(c, val); 
-//     deserialize(root->left, file); 
-//     deserialize(root->right, file); 
-// } 
+	if(leaf_node(root))
+		return;
+
+	root->left = (node_t *)malloc(sizeof(node_t));
+	root->right = (node_t *)malloc(sizeof(node_t));
+	deserialize(root->left, file); 
+	deserialize(root->right, file); 
+}
+
+void decode(node_t *tree, FILE *compressed_file, FILE *decompressed_file){
+
+	char c;
+	while((c=fgetc(compressed_file)) != EOF){
+		
+	}
+}
 
 #endif

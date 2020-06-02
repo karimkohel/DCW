@@ -3,6 +3,10 @@
 
 #define TABLESIZE 256
 
+// while thinking that a map is the best solution to store huffman codes with a O(1) speed
+// if found out that i don't have to implement a hash table to acheive that, i can just use the unicode
+// values of characters as table indices instead of hashing my own. and i did it just like that
+
 void init_table(char *table[]){
 
 	for(int i=0; i<TABLESIZE; i++){

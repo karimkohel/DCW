@@ -13,11 +13,25 @@ int main(){
 
 	// bool wanna_compress = get_input();
 
-	// if(false)
-		compress("input.txt");
-	// else{
-	// 	FILE *file = fopen("code.dat", "rb");
-	// }
+	if(false)
+		compress("input2.txt");
+	else{
+		FILE *tree_file = fopen("codes.dat", "rb");
+		FILE *in_file = fopen("output.txt", "r");
+		FILE *out_file = fopen("Decompressed.txt", "w");
+
+		node_t tree_root;
+		deserialize(&tree_root, tree_file);
+		fclose(tree_file);
+
+		decode(tree_root, in_file, out_file);
+		fclose(in_file);
+
+
+
+
+		// free_tree(&tree_root);
+	}
 
     return 0;
 }

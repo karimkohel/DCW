@@ -49,4 +49,13 @@ void printPostorder(node_t *root){
 		printf("[%c]~", root->data);
 }
 
+void free_tree(node_t *node){
+	if(node == NULL)
+		return;
+
+	free_tree(node->left);
+	free_tree(node->right);
+	free(node);
+}
+
 #endif 
