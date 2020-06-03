@@ -24,7 +24,7 @@ int main(){
 		deserialize(&tree_root, tree_file);
 		fclose(tree_file);
 
-		decode(tree_root, in_file, out_file);
+		decode(tree_root, in_file, out_file, tree_root->freq);
 		fclose(in_file);
 
 

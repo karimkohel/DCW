@@ -152,12 +152,28 @@ void deserialize(node_t *root, FILE *file) {
 	deserialize(root->right, file); 
 }
 
-void decode(node_t *tree, FILE *compressed_file, FILE *decompressed_file){
+//hight risk of failure
+void itob(char *buffer, char c){
+	char tmp[9];
+	itoa(c, tmp, 2);
+	int len = strlen(tmp);
+	for(int i=len; i<8; i++){
+		strcat(buffer, "0");
+	}
+	strcat(buffer, tmp);
+}
+
+char *decode(node_t *tree, FILE *compressed_file, FILE *decompressed_file, int comp_file_size){
 
 	char c;
+	char *bits = (char *)malloc(sizeof(char)*comp_file_size*8);//this 8 should be tree hight
+	char buffer[9];
 	while((c=fgetc(compressed_file)) != EOF){
-		
+		itob(buffer, c);
+		strcat(bits, buffer);
 	}
+
+	return bits;
 }
 
 #endif
