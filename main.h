@@ -27,7 +27,7 @@ void compress(const char *file_name){
 
 	char *compressed_str = encode_file(in_file, count, code_table, tree_hight);
 
-	write_file(compressed_str);
+	write_file(compressed_str, file_name);
 
 	serialize(tree_root, codes_file);
 
@@ -39,12 +39,12 @@ void compress(const char *file_name){
 	fclose(in_file);
 }
 
-void decompress(){
+void decompress(const char *comp_file_name){
 
 	printf("->Loading in files...\n");
 
 	FILE *tree_file = fopen("codes.dat", "rb");
-	FILE *in_file = fopen("output.txt", "r");
+	FILE *in_file = fopen(comp_file_name, "r");
 	FILE *out_file = fopen("Decompressed.txt", "w");
 
 	node_t tree_root;

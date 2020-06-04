@@ -8,21 +8,23 @@
 #include "general.h"
 #include "main.h"
 
-int main(){
+int main(int argc, char const *argv[]){
 
-	greet();
+	if(argc == 1){
 
-	bool wanna_compress = get_input();
+		greet();
 
-	if(wanna_compress){
+		int choice = get_input();
 
-		compress("input.txt");
-
+		if(choice == 1)
+			compress("input.txt");
+		else if(choice == 2)
+			decompress("compressed_input.txt");
+		else
+			fail("=== Exiting ===");
 	}
-	else{
-
-		decompress();
-
+	else if(argc == 3){
+		//pass
 	}
 
     return 0;

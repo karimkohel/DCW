@@ -6,19 +6,19 @@ void greet(){
 	printf("What do you need to do today?\n");
 	printf("-1- Compress\n");
 	printf("-2- Decompress\n");
+	printf("-3- Exit\n");
 	printf("$ ");
 }
 
-bool get_input(){
+int get_input(){
 	int i;
 
 	do{
 		scanf("%d", &i);
 	}
-	while(i != 1 && i != 2);
+	while(i > 3 || i < 1);
 
-	if(i == 1) return true;
-	else return false;
+	return i;
 }
 
 void load_file_in(Q_t *q, FILE *file, int *count){
@@ -111,8 +111,10 @@ char *encode_file(FILE *file, int count, char *table[], int tree_hight){
 	return str;
 }
 
-void write_file(char *str){
-	FILE *fp = fopen("output.txt", "w");
+void write_file(char *str,const char *in_file){
+	char comp_file_name[50] = "compressed_";
+	strcat(comp_file_name, in_file);
+	FILE *fp = fopen(comp_file_name, "w");//pass
 	char tmp[8];
 	int len = strlen(str);
 	char c;
