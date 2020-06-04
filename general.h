@@ -1,8 +1,6 @@
 #ifndef GENERAL
 #define GENERAL
 
-#define MARKER '\0';
-
 void greet(){
 	printf("\n===== Hello and welcome to the DCW =====\n\n");
 	printf("What do you need to do today?\n");
@@ -14,9 +12,10 @@ void greet(){
 bool get_input(){
 	int i;
 
-	do
+	do{
 		scanf("%d", &i);
-	while(i != 1 || i != 2);
+	}
+	while(i != 1 && i != 2);
 
 	if(i == 1) return true;
 	else return false;
@@ -91,8 +90,6 @@ node_t *load_in_tree(Q_t *q){
 		joined_node = join_nodes(tmp_node1, tmp_node2);
 		enQ(q, '\0', joined_node);
 	}
-	printPostorder(joined_node);
-	printf("\n");
 	return joined_node;
 }
 
@@ -139,7 +136,7 @@ void serialize(node_t *root, FILE *file){
 }
 
 void deserialize(node_t *root, FILE *file) {
-	//(CRDTS)//got the function ecursive idea from geeksforgeeks.org
+	//(CRDTS)//got the function recursive idea from geeksforgeeks.org
 	// but was edited heavily
 	fread(root, sizeof(node_t), 1, file);
 
@@ -152,28 +149,60 @@ void deserialize(node_t *root, FILE *file) {
 	deserialize(root->right, file); 
 }
 
-//hight risk of failure
-void itob(char *buffer, char c){
-	char tmp[9];
-	itoa(c, tmp, 2);
-	int len = strlen(tmp);
-	for(int i=len; i<8; i++){
-		strcat(buffer, "0");
-	}
-	strcat(buffer, tmp);
+void atob(char* buffer, int n){
+	//(CRDTS)//got the function idea from programmingsimplified.org
+	// had to learn about binary operators and shifting bits,
+	// bitwise and all around to pull this off
+	// the awesome name i gave this function however is 100% mine
+	int c, k; 
+    for (c = 7; c >= 0; c--){
+	    k = n >> c;
+
+	    if (k & 1)
+	      strcat(buffer, "1");
+	    else
+	      strcat(buffer, "0");
+    }
 }
 
-char *decode(node_t *tree, FILE *compressed_file, FILE *decompressed_file, int comp_file_size){
+char *get_bits(node_t *tree, FILE *compressed_file, int comp_file_size, int tree_hight){
 
 	char c;
-	char *bits = (char *)malloc(sizeof(char)*comp_file_size*8);//this 8 should be tree hight
+	char *bits = (char *)malloc(sizeof(char)*comp_file_size*tree_hight);
 	char buffer[9];
-	while((c=fgetc(compressed_file)) != EOF){
-		itob(buffer, c);
+	int counter = 0;
+
+	bits[0] = '\0'; //for some reason the new string start off with garbage value?
+	while((c=fgetc(compressed_file)) != EOF && counter < 85){
+		atob(buffer, c);
 		strcat(bits, buffer);
+		buffer[0] = '\0';
+		counter++;
+		//pass hena cuz loop exits magically
 	}
+	printf("c= %c\n",c );
+	printf("Count = %d\n", counter);
+	printf("%s\n", bits);
 
 	return bits;
+}
+
+void decode_and_write(node_t *root, char *bits, FILE *out_file){
+
+	int len = strlen(bits); //because strlen returns a size_t type i put it in an int
+	node_t *tmp = root;
+	for(int i=0; i<len; i++){
+
+		if(bits[i] == '0')
+			tmp = tmp->left;
+		else
+			tmp = tmp->right;
+		
+		if(leaf_node(tmp)){
+			fputc(tmp->data, out_file);
+			tmp = root;
+		}
+	}
 }
 
 #endif

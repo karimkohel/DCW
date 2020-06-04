@@ -58,4 +58,23 @@ void free_tree(node_t *node){
 	free(node);
 }
 
+int find_hight(node_t *root){
+
+	int leftDepth;
+	int rightDepth;
+
+	if(root == NULL)
+		return 0;
+	else{
+
+		leftDepth = find_hight(root->left);
+		rightDepth = find_hight(root->right);
+
+		if(rightDepth > leftDepth)
+			return (rightDepth+1);
+		else
+			return (leftDepth+1);
+	}
+}
+
 #endif 
