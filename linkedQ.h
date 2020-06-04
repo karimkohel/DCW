@@ -13,23 +13,6 @@ struct node_t {
 	// a frankenstein structure
 };
 
-node_t *new_node(char item, int freq){
-
-	node_t *node = (node_t*)malloc(sizeof(node_t));
-
-	if(node == NULL)
-		return NULL;
-
-	node->data = item;
-	node->freq = freq;
-	node->next = NULL;
-	node->prev = NULL;
-	node->right = NULL;
-	node->left = NULL;
-
-	return node;
-}
-
 node_t *create_node(char item){
 
 	node_t *node = (node_t*)malloc(sizeof(node_t));
@@ -84,105 +67,6 @@ bool insert_first(node_t **head, node_t **tail, char item){
 
 	*head = tmp;
 
-	return true;
-}
-
-bool insert_last(node_t **head, node_t **tail, char item){
-
-	//whatever the case, we would need to create a node and since it's
-	// gonna be the last node, the next ptr surely will be a NULL
-	node_t *tmp = create_node(item);
-
-	if(tmp == NULL)
-		return false;
-
-	tmp->next = NULL;
-
-	if(*head == NULL){
-		tmp->prev = NULL;
-		*head = tmp;
-		*tail = tmp;
-	}
-	else{
-		tmp->prev = *tail;
-		(*tail)->next = tmp; //needed the paranthesis because pointers are dumb aren't they
-		*tail = tmp;
-	}
-
-	return true;
-}
-
-bool remove_last(node_t **head, node_t **tail, char *element, int *freq){
-
-	if(*head == NULL)
-		return false;
-
-	*element = (*tail)->data;
-	*freq = (*tail)->freq;
-
-	if((*head)->next == NULL){
-		free((*head));
-		*head = NULL;
-		*tail = NULL;
-	}
-	else{
-		*tail = (*tail)->prev;
-		free((*tail)->next);
-		(*tail)->next = NULL;
-	}
-
-	return true;
-}
-
-bool remove_first(node_t **head, node_t **tail, char *element, int *freq){
-
-	if(*head == NULL)
-		return false;
-
-	*element = (*head)->data;
-	*freq = (*head)->freq;
-
-	if((*head)->next == NULL){
-		free(*head);
-		*head = NULL;
-		*tail = NULL;
-	}
-	else{
-		*head = (*head)->next;
-		free((*head)->prev); // same as last function but from the other end
-		(*head)->prev = NULL;
-	}
-	return true;
-}
-
-bool remove_node(node_t **head, node_t **tail, char node_data){
-
-	//Not Applicable for a priority Q
-
-	if(*head == NULL)
-		return false;
-
-	node_t *tmp = find_node((*head), node_data);
-
-	if(tmp == NULL)
-		return false;
-
-	if(tmp->prev == NULL){
-		*head = tmp->next;
-		free((*head)->prev);
-		(*head)->prev = NULL;
-	}
-	else if(tmp->next == NULL){
-		*tail = tmp->prev;
-		free((*tail)->next);
-		(*tail)->next = NULL;
-	}
-	else{
-	
-		(tmp->prev)->next = tmp->next; //the peranthesis here are not a must but i let them be for readability and
-		(tmp->next)->prev = tmp->prev; // to clarify that i am accesing the next and prev nodes's next and prev ptr
-		free(tmp);
-	}
 	return true;
 }
 

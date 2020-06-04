@@ -1,7 +1,7 @@
 #ifndef HASHTABLE
 #define HASHTABLE
 
-#define TABLESIZE 256
+#define TABLESIZE 255
 
 // while thinking that a map is the best solution to store huffman codes with a O(1) speed
 // if found out that i don't have to implement a hash table to acheive that, i can just use the unicode

@@ -104,6 +104,7 @@ char *encode_file(FILE *file, int count, char *table[]){
 		intc = (int)c;
 		strcat(str, table[intc]);
 	}
+	printf("\n%s\n", str);
 	return str;
 }
 
@@ -115,9 +116,10 @@ void write_file(char *str){
 	for(int i=0; i<(len/8); i++){
 		strncpy(tmp, str, 8);
 		c = strtol(tmp, 0,2);
-		str = str + 8;
+		str = str + 8; //i love pointer arithmatics
 		fputc(c, fp);
 	}
+	fputc('\0', fp);
 	fclose(fp);
 }
 
@@ -173,16 +175,15 @@ char *get_bits(node_t *tree, FILE *compressed_file, int comp_file_size, int tree
 	int counter = 0;
 
 	bits[0] = '\0'; //for some reason the new string start off with garbage value?
-	while((c=fgetc(compressed_file)) != EOF && counter < 85){
+	while(!feof(compressed_file)){
+		c=fgetc(compressed_file);
 		atob(buffer, c);
 		strcat(bits, buffer);
 		buffer[0] = '\0';
 		counter++;
 		//pass hena cuz loop exits magically
 	}
-	printf("c= %c\n",c );
-	printf("Count = %d\n", counter);
-	printf("%s\n", bits);
+	printf("count = %d\n", counter);
 
 	return bits;
 }
@@ -203,6 +204,12 @@ void decode_and_write(node_t *root, char *bits, FILE *out_file){
 			tmp = root;
 		}
 	}
+}
+
+float get_ratio(int in_file_count, int out_file_count){
+	float result = (float)out_file_count/in_file_count;
+	result = result * 100;
+	return result;
 }
 
 #endif
