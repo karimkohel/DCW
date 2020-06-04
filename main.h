@@ -7,11 +7,12 @@ void compress(const char *file_name){
 	int count;
 	node_t *tree_root;
 	char *code_table[TABLESIZE];
-	FILE *file = fopen(file_name, "r");
-	FILE *fp_tree = fopen("codes.dat", "wb");
+	FILE *in_file = fopen(file_name, "r");
+	FILE *codes_file = fopen("codes.dat", "wb");
 
+	check_files(in_file, codes_file);
 
-	load_file_in(&q, file, &count);
+	load_file_in(&q, in_file, &count);
 
 	printf("->Loaded file in...\n");
 
@@ -22,18 +23,20 @@ void compress(const char *file_name){
 
 	printf("->Compressing...\n");
 
-	char *compressed_str = encode_file(file, count, code_table);
+	int tree_hight = find_hight(tree_root);
+
+	char *compressed_str = encode_file(in_file, count, code_table, tree_hight);
 
 	write_file(compressed_str);
 
-	serialize(tree_root, fp_tree);
+	serialize(tree_root, codes_file);
 
 	printf("->All Done.\n");
 
-	fclose(fp_tree);
+	fclose(codes_file);
 	free_table(code_table);
 	free(compressed_str);
-	fclose(file);
+	fclose(in_file);
 }
 
 void decompress(){

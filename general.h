@@ -93,18 +93,21 @@ node_t *load_in_tree(Q_t *q){
 	return joined_node;
 }
 
-char *encode_file(FILE *file, int count, char *table[]){
+char *encode_file(FILE *file, int count, char *table[], int tree_hight){
 
 	fseek(file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
 
 	char c;
-	char *str = (char *)malloc(sizeof(char)*count*10);
+	char *str = (char *)malloc(sizeof(char)*count*tree_hight);
+
+	if(str == NULL)
+		fail("{ERROR}: Not enough memory ");
+
 	int intc;
 	while((c=fgetc(file)) != EOF){
 		intc = (int)c;
 		strcat(str, table[intc]);
 	}
-	printf("\n%s\n", str);
 	return str;
 }
 
@@ -171,6 +174,10 @@ char *get_bits(node_t *tree, FILE *compressed_file, int comp_file_size, int tree
 
 	char c;
 	char *bits = (char *)malloc(sizeof(char)*comp_file_size*tree_hight);
+
+	if(bits == NULL)
+		fail("{ERROR}: Not enough memory");
+
 	char buffer[9];
 	int counter = 0;
 
@@ -211,5 +218,6 @@ float get_ratio(int in_file_count, int out_file_count){
 	result = result * 100;
 	return result;
 }
+
 
 #endif
