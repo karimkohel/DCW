@@ -24,8 +24,13 @@ int main(int argc, char const *argv[]){
 			fail("=== Exiting ===");
 	}
 	else if(argc == 3){
-		//pass
+		if(strcmp(argv[2], "-c") || strcmp(argv[2], "-d"))
+			help_user();
+		printf("Yup\n");
 	}
+	else
+		help_user();
+	printf("Hey\n");
 
     return 0;
 }
