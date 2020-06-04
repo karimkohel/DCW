@@ -12,23 +12,26 @@ int main(int argc, char const *argv[]){
 
 	if(argc == 1){
 
-		greet();
-
-		int choice = get_input();
+		int choice = greet();
 
 		if(choice == 1)
-			compress("input.txt");
+			compress("input.txt", "output.dat");
 		else if(choice == 2)
-			decompress("compressed_input.txt");
+			decompress("output.dat", "decompressed.txt");
 		else
 			fail("=== Exiting ===");
 
 	}
-	else if(argc == 3){
+	else if(argc == 4){
 
-		if(strcmp(argv[2], "-c") || strcmp(argv[2], "-d"))
+		if(!strcmp(argv[1], "-c"))
+			compress(argv[2], argv[3]);
+
+		else if(!strcmp(argv[1], "-d"))
+			decompress(argv[2], argv[3]);
+		
+		else
 			help_user();
-		//complete user input file name case
 	}
 	else
 		help_user();

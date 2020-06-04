@@ -1,16 +1,14 @@
 #ifndef GENERAL
 #define GENERAL
 
-void greet(){
+int greet(){
 	printf("\n===== Hello and welcome to the DCW =====\n\n");
 	printf("What do you need to do today?\n");
 	printf("-1- Compress\n");
 	printf("-2- Decompress\n");
 	printf("-3- Exit\n");
 	printf("$ ");
-}
 
-int get_input(){
 	int i;
 
 	do{
@@ -30,6 +28,8 @@ void load_file_in(Q_t *q, FILE *file, int *count){
 			printf("Error in EnQing\n");
 			break;
 		}
+		if(counter == 200000)
+			printf("->Still loading\n");
 		counter++;
 	}
 
@@ -111,9 +111,7 @@ char *encode_file(FILE *file, int count, char *table[], int tree_hight){
 	return str;
 }
 
-void write_file(char *str,const char *in_file){
-	char comp_file_name[50] = "compressed_";
-	strcat(comp_file_name, in_file);
+void write_file(char *str,const char *in_file, const char *comp_file_name){
 	FILE *fp = fopen(comp_file_name, "w");//pass
 	char tmp[8];
 	int len = strlen(str);
@@ -124,7 +122,6 @@ void write_file(char *str,const char *in_file){
 		str = str + 8; //i love pointer arithmatics
 		fputc(c, fp);
 	}
-	fputc('\0', fp);
 	fclose(fp);
 }
 

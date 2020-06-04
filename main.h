@@ -1,24 +1,26 @@
 #ifndef MAIN
 #define MAIN
 
-void compress(const char *file_name){
+void compress(const char *in_file_name, const char *out_file_name){
 
 	Q_t q;
-	int count;
-	node_t *tree_root;
-	char *code_table[TABLESIZE];
-	FILE *in_file = fopen(file_name, "r");
+	FILE *in_file = fopen(in_file_name, "r");
 	FILE *codes_file = fopen("codes.dat", "wb");
 
 	check_files(in_file, codes_file);
 
+
+	printf("->Loaded in file...\n");
+
+	int count;
 	load_file_in(&q, in_file, &count);
 
-	printf("->Loaded file in...\n");
-
+	node_t *tree_root;
 	tree_root = load_in_tree(&q);
+
 	printf("->Loading compressoin tree..\n");
 
+	char *code_table[TABLESIZE];
 	get_codes(tree_root, code_table);
 
 	printf("->Compressing...\n");
@@ -27,7 +29,7 @@ void compress(const char *file_name){
 
 	char *compressed_str = encode_file(in_file, count, code_table, tree_hight);
 
-	write_file(compressed_str, file_name);
+	write_file(compressed_str, in_file_name, out_file_name);
 
 	serialize(tree_root, codes_file);
 
@@ -39,13 +41,13 @@ void compress(const char *file_name){
 	fclose(in_file);
 }
 
-void decompress(const char *comp_file_name){
+void decompress(const char *comp_file_name, const char *decom_file_name){
 
 	printf("->Loading in files...\n");
 
 	FILE *tree_file = fopen("codes.dat", "rb");
 	FILE *in_file = fopen(comp_file_name, "r");
-	FILE *out_file = fopen("Decompressed.txt", "w");
+	FILE *out_file = fopen(decom_file_name, "w");
 
 	node_t tree_root;
 
@@ -55,7 +57,6 @@ void decompress(const char *comp_file_name){
 	printf("->Loading metadata...\n");
 
 	int tree_hight = find_hight(&tree_root);
-	printf("H=%d\n", tree_hight);
 
 	char *bits = get_bits(&tree_root, in_file, tree_root.freq, tree_hight);
 	fclose(in_file);
