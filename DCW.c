@@ -22,15 +22,16 @@ int main(int argc, char const *argv[]){
 			decompress("compressed_input.txt");
 		else
 			fail("=== Exiting ===");
+
 	}
 	else if(argc == 3){
+
 		if(strcmp(argv[2], "-c") || strcmp(argv[2], "-d"))
 			help_user();
-		printf("Yup\n");
+		//complete user input file name case
 	}
 	else
 		help_user();
-	printf("Hey\n");
 
     return 0;
 }
