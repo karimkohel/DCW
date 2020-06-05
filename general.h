@@ -117,6 +117,7 @@ void encode_file(FILE *in_file, char *table[], int tree_hight){
 		if(len > 8){
 			strncpy(tmp, buffer, 8);
 			out_c = strtol(tmp, 0, 2);
+			trim_str(buffer, 8);
 			fputc(out_c, comp_file)
 		}
 	}
