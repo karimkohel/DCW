@@ -23,13 +23,16 @@ void load_file_in(Q_t *q, FILE *file, int *count){
 
 	char c;
 	int counter = 0;
+	int wait = 500000;
 	while((c=fgetc(file)) != EOF){
 		if(!enQ(q, c, NULL)){
 			printf("Error in EnQing\n");
 			break;
 		}
-		if(counter == 200000)
+		if(counter == wait){
 			printf("->Still loading\n");
+			wait = wait*2;
+		}
 		counter++;
 	}
 
@@ -100,49 +103,49 @@ void trim_str(char *str, int offset){
     }
 }
 
-void encode_file(FILE *in_file, char *table[], int tree_hight){
+void encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 
 	fseek(in_file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
 
 	char in_c, out_c;
-	char buffer[tree_hight*2];
+	char buffer[tree_hight*tree_hight];
 	char tmp[9];
 	int len;
 
 	while((in_c=fgetc(in_file)) != EOF){
 
-		strcat(buffer, table[((int)in_c)]); // must find a more efiicient way
+		strcat(buffer, table[((int)in_c)]);
 		len = strlen(buffer);
 
-		if(len > 8){
+		if(len > 7){
 			strncpy(tmp, buffer, 8);
 			out_c = strtol(tmp, 0, 2);
-			trim_str(buffer, 8);
-			fputc(out_c, comp_file)
+			fputc(out_c, comp_file);
+			trim_str(buffer, 8);// must find error
 		}
 	}
 
-	len = strlen(buffer);
-	if(len > 0){
-		//pass
-	}
+	// len = strlen(buffer);
+	// if(len > 0){
+	// 	//pass
+	// }
 
 }
 
-void write_file(char *str, const char *comp_file_name){
+// void write_file(char *str, const char *comp_file_name){
 
-	FILE *fp = fopen(comp_file_name, "w");//pass
-	char tmp[8];
-	int len = strlen(str);
-	char c;
-	for(int i=0; i<(len/8); i++){
-		strncpy(tmp, str, 8);
-		c = strtol(tmp, 0,2);
-		str = str + 8; //i love pointer arithmatics, don't you?
-		fputc(c, fp);
-	}
-	fclose(fp);
-}
+// 	FILE *fp = fopen(comp_file_name, "w");
+// 	char tmp[8];
+// 	int len = strlen(str);
+// 	char c;
+// 	for(int i=0; i<(len/8); i++){
+// 		strncpy(tmp, str, 8);
+// 		c = strtol(tmp, 0,2);
+// 		str = str + 8; //i love pointer arithmatics, don't you?
+// 		fputc(c, fp);
+// 	}
+// 	fclose(fp);
+// }
 
 void serialize(node_t *root, FILE *file){
  

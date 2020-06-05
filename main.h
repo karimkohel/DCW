@@ -6,6 +6,7 @@ void compress(const char *in_file_name, const char *out_file_name){
 	Q_t q;
 	FILE *in_file = fopen(in_file_name, "r");
 	FILE *codes_file = fopen("codes.dat", "wb");
+	FILE *out_file = fopen(out_file_name, "w");
 
 	check_files(in_file, codes_file);
 
@@ -26,17 +27,18 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	int tree_hight = find_hight(tree_root);
 
-	char *compressed_str = encode_file(in_file, count, code_table, tree_hight);
+	encode_file(in_file, code_table, tree_hight, out_file);
 
-	write_file(compressed_str, out_file_name);
+	// write_file(compressed_str, out_file_name);//testing the other equivilant function
 
 	serialize(tree_root, codes_file);
 
 	printf("->All Done.\n");
 
 	fclose(codes_file);
+	fclose(out_file);
 	free_table(code_table);
-	free(compressed_str);
+	// free(compressed_str);
 	fclose(in_file);
 }
 
