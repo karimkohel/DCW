@@ -106,7 +106,7 @@ char *encode_file(FILE *file, int count, char *table[], int tree_hight){
 	int intc;
 	while((c=fgetc(file)) != EOF){
 		intc = (int)c;
-		strcat(str, table[intc]);
+		strcat(str, table[intc]); // must find a more efiicient way
 	}
 	return str;
 }
@@ -119,18 +119,16 @@ void write_file(char *str,const char *in_file, const char *comp_file_name){
 	for(int i=0; i<(len/8); i++){
 		strncpy(tmp, str, 8);
 		c = strtol(tmp, 0,2);
-		str = str + 8; //i love pointer arithmatics
+		str = str + 8; //i love pointer arithmatics, don't you?
 		fputc(c, fp);
 	}
 	fclose(fp);
 }
 
 void serialize(node_t *root, FILE *file){
-	//(CRDTS)//got the function recursive idea from geeksforgeeks.org
-	// but was edited heavily
  
     if (root == NULL){ 
-        // fwrite(root, sizeof(node_t), 1, file); need to come back to this
+        // fwrite(root, sizeof(node_t), 1, file); // need to come back to this
         return; 
     } 
   
@@ -140,8 +138,6 @@ void serialize(node_t *root, FILE *file){
 }
 
 void deserialize(node_t *root, FILE *file) {
-	//(CRDTS)//got the function recursive idea from geeksforgeeks.org
-	// but was edited heavily
 	fread(root, sizeof(node_t), 1, file);
 
 	if(leaf_node(root))
@@ -153,16 +149,17 @@ void deserialize(node_t *root, FILE *file) {
 	deserialize(root->right, file); 
 }
 
-void atob(char* buffer, int n){
+void atob(char* buffer, int c){
 	//(CRDTS)//got the function idea from programmingsimplified.org
 	// had to learn about binary operators and shifting bits,
 	// bitwise and all around to pull this off
 	// the awesome name i gave this function however is 100% mine
-	int c, k; 
-    for (c = 7; c >= 0; c--){
-	    k = n >> c;
 
-	    if (k & 1)
+	int k; 
+    for(int i = 7; i >= 0; i--){
+	    k = c >> i; // right shift all bits in c by i times (which is equivilant of deviding by 2^*right operand*
+
+	    if (k & 1)//all bits in k AND gated to all bits in 1 (Which are 00000001)
 	      strcat(buffer, "1");
 	    else
 	      strcat(buffer, "0");
