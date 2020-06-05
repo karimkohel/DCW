@@ -29,17 +29,14 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	encode_file(in_file, code_table, tree_hight, out_file);
 
-	// write_file(compressed_str, out_file_name);//testing the other equivilant function
-
 	serialize(tree_root, codes_file);
 
 	printf("->All Done.\n");
 
 	fclose(codes_file);
 	fclose(out_file);
-	free_table(code_table);
-	// free(compressed_str);
 	fclose(in_file);
+	free_table(code_table);
 }
 
 void decompress(const char *comp_file_name, const char *decom_file_name){
@@ -59,17 +56,17 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 
 	int tree_hight = find_hight(&tree_root);
 
-	char *bits = get_bits(&tree_root, in_file, tree_root.freq, tree_hight);
-	fclose(in_file);
-
 	printf("->Decompressing...\n");
 
-	decode_and_write(&tree_root, bits, out_file);
+	get_bits(&tree_root, in_file, tree_hight, out_file);// do the same memory management as in compression
+	fclose(in_file);
+
+	// decode_and_write(&tree_root, bits, out_file);
 	fclose(out_file);
 
 	printf("->All done.\n");
 
-	free(bits);
+	// free(bits);
 }
 
 

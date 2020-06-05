@@ -117,11 +117,12 @@ void encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 		strcat(buffer, table[((int)in_c)]);
 		len = strlen(buffer);
 
-		if(len > 7){
+		while(len > 7){ // change this to a while
 			strncpy(tmp, buffer, 8);
 			out_c = strtol(tmp, 0, 2);
 			fputc(out_c, comp_file);
-			trim_str(buffer, 8);// must find error
+			trim_str(buffer, 8);
+			len = len - 8;
 		}
 	}
 
@@ -129,23 +130,7 @@ void encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 	// if(len > 0){
 	// 	//pass
 	// }
-
 }
-
-// void write_file(char *str, const char *comp_file_name){
-
-// 	FILE *fp = fopen(comp_file_name, "w");
-// 	char tmp[8];
-// 	int len = strlen(str);
-// 	char c;
-// 	for(int i=0; i<(len/8); i++){
-// 		strncpy(tmp, str, 8);
-// 		c = strtol(tmp, 0,2);
-// 		str = str + 8; //i love pointer arithmatics, don't you?
-// 		fputc(c, fp);
-// 	}
-// 	fclose(fp);
-// }
 
 void serialize(node_t *root, FILE *file){
  
@@ -188,48 +173,77 @@ void atob(char* buffer, int c){
     }
 }
 
-char *get_bits(node_t *tree, FILE *compressed_file, int comp_file_size, int tree_hight){
+char decode(char *bits, node_t *root, int *offset){ // ad ability to give back offset
+
+	int len = strlen(bits);
+	int j = 1;
+	for(int i=0; i<len; i++, j++){
+
+		if(bits[i] == '0'){
+			root = root->left;
+		}
+		else{
+			root = root->right;
+		}
+
+		if(leaf_node(root))
+			break;
+	}
+
+	trim_str(bits, j);
+
+	*offset = j;
+
+	return root->data;
+}
+
+void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file){
 
 	char c;
-	char *bits = (char *)malloc(sizeof(char)*comp_file_size*tree_hight);
-
-	if(bits == NULL)
-		fail("{ERROR}: Not enough memory");
+	char bits[tree_h*2];
 
 	char buffer[9];
-	int counter = 0;
+	int len;
+	int offset;
 
-	bits[0] = '\0'; //for some reason the new string start off with garbage value?
-	while(!feof(compressed_file)){
-		c=fgetc(compressed_file);
+	while(!feof(comp_file)){
+		c=fgetc(comp_file);
+
 		atob(buffer, c);
+
 		strcat(bits, buffer);
+		len = strlen(bits);
+
 		buffer[0] = '\0';
-		counter++;
-		//pass hena cuz loop exits magically
-	}
-	printf("count = %d\n", counter);
 
-	return bits;
-}
-
-void decode_and_write(node_t *root, char *bits, FILE *out_file){
-
-	int len = strlen(bits); //because strlen returns a size_t type i put it in an int
-	node_t *tmp = root;
-	for(int i=0; i<len; i++){
-
-		if(bits[i] == '0')
-			tmp = tmp->left;
-		else
-			tmp = tmp->right;
-		
-		if(leaf_node(tmp)){
-			fputc(tmp->data, out_file);
-			tmp = root;
+		while(len > tree_h){
+			fputc(decode(bits, root, &offset), out_file);
+			len = len - offset;
 		}
 	}
+
+	if(len > tree_h){
+		// pass // the last bits
+	}
 }
+
+// void decode_and_write(node_t *root, char *bits, FILE *out_file){
+
+// 	int len = strlen(bits); //because strlen returns a size_t type i put it in an int
+// 	node_t *tmp = root;
+// 	for(int i=0; i<len; i++){
+
+// 		if(bits[i] == '0')
+// 			tmp = tmp->left;
+// 		else
+// 			tmp = tmp->right;
+		
+// 		if(leaf_node(tmp)){
+// 			fputc(tmp->data, out_file);
+// 			tmp = root;
+// 		}
+// 	}
+// }
 
 float get_ratio(int in_file_count, int out_file_count){
 	float result = (float)out_file_count/in_file_count;
