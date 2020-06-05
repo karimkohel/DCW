@@ -28,7 +28,7 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	char *compressed_str = encode_file(in_file, count, code_table, tree_hight);
 
-	write_file(compressed_str, in_file_name, out_file_name);
+	write_file(compressed_str, out_file_name);
 
 	serialize(tree_root, codes_file);
 

@@ -93,25 +93,43 @@ node_t *load_in_tree(Q_t *q){
 	return joined_node;
 }
 
-char *encode_file(FILE *file, int count, char *table[], int tree_hight){
-
-	fseek(file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
-
-	char c;
-	char *str = (char *)malloc(sizeof(char)*count*tree_hight);
-
-	if(str == NULL)
-		fail("{ERROR}: Not enough memory ");
-
-	int intc;
-	while((c=fgetc(file)) != EOF){
-		intc = (int)c;
-		strcat(str, table[intc]); // must find a more efiicient way
-	}
-	return str;
+void trim_str(char *str, int offset){
+    int len = strlen(str);
+    for(int i=0; i<(len-offset+1); i++){
+        str[i] = str[offset+i];
+    }
 }
 
-void write_file(char *str,const char *in_file, const char *comp_file_name){
+void encode_file(FILE *in_file, char *table[], int tree_hight){
+
+	fseek(in_file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
+
+	char in_c, out_c;
+	char buffer[tree_hight*2];
+	char tmp[9];
+	int len;
+
+	while((in_c=fgetc(in_file)) != EOF){
+
+		strcat(buffer, table[((int)in_c)]); // must find a more efiicient way
+		len = strlen(buffer);
+
+		if(len > 8){
+			strncpy(tmp, buffer, 8);
+			out_c = strtol(tmp, 0, 2);
+			fputc(out_c, comp_file)
+		}
+	}
+
+	len = strlen(buffer);
+	if(len > 0){
+		//pass
+	}
+
+}
+
+void write_file(char *str, const char *comp_file_name){
+
 	FILE *fp = fopen(comp_file_name, "w");//pass
 	char tmp[8];
 	int len = strlen(str);
