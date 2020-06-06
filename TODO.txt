@@ -1,10 +1,8 @@
 TODO:
-
-	- IMPLIMENT THE ALGORITHM(Loop or Recurse or DIE)
-	- Assign a zero to each left traversal and 1 to each right one
-	- Store the output binary string of the tree travesrsal based on the original text
-	- learn about dat files
-	- Create a function to calculate compression %
+	- Deal with the pesky extra characters
+	- test small
+	- test mediume
+	- test big
 
 DONE:
 	- Start the project Repositary at github.com/karimkohel/DCW
@@ -22,3 +20,9 @@ DONE:
 	- a join function in the enQ
 	- Use the first two nodes in the sorted Q and join them making their parent the sum of their Freq.
 	- add the parant node back in the Q (BUT IN A SORTED WAY)
+	- IMPLIMENT THE ALGORITHM(Loop or Recurse or DIE)
+	- Assign a zero to each left traversal and 1 to each right one
+	- Store the output binary string of the tree travesrsal based on the original text
+	- learn about dat files
+	- Create a function to calculate compression %
+	- do the exact mirrored opposit in decompression

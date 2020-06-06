@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]){
 			decompress("output.dat", "decompressed.txt");
 		else
 			fail("=== Exiting ===");
-
+		
 	}
 	else if(argc == 4){
 
@@ -29,7 +29,7 @@ int main(int argc, char const *argv[]){
 
 		else if(!strcmp(argv[1], "-d"))
 			decompress(argv[2], argv[3]);
-		
+
 		else
 			help_user();
 	}
