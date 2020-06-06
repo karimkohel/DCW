@@ -30,7 +30,7 @@ void load_file_in(Q_t *q, FILE *file, int *count){
 			break;
 		}
 		if(counter == wait){
-			printf("->Still loading\n");
+			printf("->Still loading...\n");
 			wait = wait*2;
 		}
 		counter++;
@@ -103,7 +103,7 @@ void trim_str(char *str, int offset){
     }
 }
 
-void encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
+int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 
 	fseek(in_file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
 
@@ -111,6 +111,7 @@ void encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 	char buffer[tree_hight*tree_hight];
 	char tmp[9];
 	int len;
+	int count = 0;
 
 	while((in_c=fgetc(in_file)) != EOF){
 
@@ -123,6 +124,7 @@ void encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 			fputc(out_c, comp_file);
 			trim_str(buffer, 8);
 			len = len - 8;
+			count++;
 		}
 	}
 
@@ -130,6 +132,7 @@ void encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 	// if(len > 0){
 	// 	//pass
 	// }
+	return count;
 }
 
 void serialize(node_t *root, FILE *file){
@@ -226,24 +229,6 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file){
 		// pass // the last bits
 	}
 }
-
-// void decode_and_write(node_t *root, char *bits, FILE *out_file){
-
-// 	int len = strlen(bits); //because strlen returns a size_t type i put it in an int
-// 	node_t *tmp = root;
-// 	for(int i=0; i<len; i++){
-
-// 		if(bits[i] == '0')
-// 			tmp = tmp->left;
-// 		else
-// 			tmp = tmp->right;
-		
-// 		if(leaf_node(tmp)){
-// 			fputc(tmp->data, out_file);
-// 			tmp = root;
-// 		}
-// 	}
-// }
 
 float get_ratio(int in_file_count, int out_file_count){
 	float result = (float)out_file_count/in_file_count;
