@@ -103,14 +103,14 @@ void trim_str(char *str, int offset){
     }
 }
 
-int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
+int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, char **extra_bits){
 
 	fseek(in_file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
 
 	char in_c;
 	int out_c;
-	char buffer[tree_hight*tree_hight];
-	buffer[0] = '\0';
+	char *buffer = (char *)malloc(tree_hight*tree_hight*sizeof(char));
+	buffer[0] = '\0'; // the string starts with garbage value for some reason
 	char tmp[9];
 	int len;
 	int count = 0;
@@ -130,11 +130,15 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 		}
 	}
 
-	// len = strlen(buffer);
-	// if(len > 0){
-	// 	//pass
-	// }
+	*extra_bits = buffer;
 	return count;
+}
+
+void write_extra_bits(FILE *file, char *bits){
+	int len = strlen(bits);
+	for(int i=0; i<len+1; i++){
+		fwrite(&bits[i], sizeof(char), 1, file);
+	}
 }
 
 void serialize(node_t *root, FILE *file){
@@ -161,6 +165,14 @@ void deserialize(node_t *root, FILE *file) {
 	deserialize(root->right, file); 
 }
 
+void get_extra_bits(FILE *file, char *bits){
+	for(int i=0; i<8; i++){
+		fread(&bits[i], sizeof(char), 1, file);
+		if(bits[i] == '\0')
+			break;
+	}
+}
+
 void atob(char* buffer, int c){
 	//(CRDTS)//got the function idea from programmingsimplified.org
 	// had to learn about binary operators and shifting bits,
@@ -178,7 +190,7 @@ void atob(char* buffer, int c){
     }
 }
 
-char decode(char *bits, node_t *root, int *offset){ // ad ability to give back offset
+char decode(char *bits, node_t *root, int *offset){
 
 	int len = strlen(bits);
 	int j = 1;
@@ -202,14 +214,16 @@ char decode(char *bits, node_t *root, int *offset){ // ad ability to give back o
 	return root->data;
 }
 
-void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file){
+void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *extra_bits){
 
 	char c;
-	char bits[tree_h*2];
-
+	char bits[tree_h*tree_h];
+	bits[0] = '\0';
 	char buffer[9];
+	buffer[0] = '\0';
 	int len;
 	int offset;
+	int extra_len = strlen(extra_bits);
 
 	while(!feof(comp_file)){
 		c=fgetc(comp_file);
@@ -217,6 +231,7 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file){
 		atob(buffer, c);
 
 		strcat(bits, buffer);
+
 		len = strlen(bits);
 
 		buffer[0] = '\0';

@@ -27,15 +27,19 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	int tree_hight = find_hight(tree_root);
 
-	int out_count = encode_file(in_file, code_table, tree_hight, out_file);
+	char *extra_bits;
+	int out_count = encode_file(in_file, code_table, tree_hight, out_file, &extra_bits);
 
 	serialize(tree_root, codes_file);
+
+	write_extra_bits(codes_file, extra_bits);
 
 	float ratio = get_ratio(in_count, out_count);
 
 	printf("->Compressoin Done.\n");
 	printf("== Compressoin ratio = %.2f ==\n", ratio);
 
+	free(extra_bits);
 	fclose(codes_file);
 	fclose(out_file);
 	fclose(in_file);
@@ -46,14 +50,16 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 
 	printf("->Loading in files...\n");
 
-	FILE *tree_file = fopen("codes.dat", "rb");
+	FILE *codes_file = fopen("codes.dat", "rb");
 	FILE *in_file = fopen(comp_file_name, "r");
 	FILE *out_file = fopen(decom_file_name, "w");
 
 	node_t tree_root;
+	char extra_bits[8];
 
-	deserialize(&tree_root, tree_file);
-	fclose(tree_file);
+	deserialize(&tree_root, codes_file);
+	get_extra_bits(codes_file, extra_bits);
+	fclose(codes_file);
 
 	printf("->Loading metadata...\n");
 
@@ -61,8 +67,10 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 
 	printf("->Decompressing...\n");
 
-	get_bits(&tree_root, in_file, tree_hight, out_file);// do the same memory management as in compression
-	fclose(in_file);fclose(out_file);
+	get_bits(&tree_root, in_file, tree_hight, out_file, extra_bits);// do the same memory management as in compression
+	
+	fclose(in_file);
+	fclose(out_file);
 
 	printf("->All done.\n");
 }
