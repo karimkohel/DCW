@@ -24,7 +24,7 @@ void load_file_in(Q_t *q, FILE *file, int *count){
 	char c;
 	int counter = 0;
 	int wait = 500000;
-	while((c=fgetc(file)) != EOF){
+	while(fread(&c, sizeof(char), 1, file) == 1){
 		if(!enQ(q, c, NULL)){
 			printf("Error in EnQing\n");
 			break;
@@ -109,13 +109,14 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, c
 
 	char in_c;
 	int out_c;
+	char out_c2;
 	char *buffer = (char *)malloc(tree_hight*tree_hight*sizeof(char));
 	buffer[0] = '\0'; // the string starts with garbage value for some reason
 	char tmp[9];
 	int len;
 	int count = 0;
 
-	while((in_c=fgetc(in_file)) != EOF){
+	while(fread(&in_c, sizeof(char), 1, in_file) == 1){
 
 		strcat(buffer, table[((int)in_c)]);
 		len = strlen(buffer);
@@ -123,7 +124,8 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, c
 		while(len > 7){
 			strncpy(tmp, buffer, 8);
 			out_c = strtol(tmp, 0, 2);
-			fputc(out_c, comp_file);
+			out_c2 = out_c;
+			fwrite(&out_c2, sizeof(char), 1, comp_file);
 			trim_str(buffer, 8);
 			len = len - 8;
 			count++;
@@ -217,16 +219,15 @@ char decode(char *bits, node_t *root, int *offset){
 void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *extra_bits){
 
 	char c;
+	char out_c;
 	char bits[tree_h*tree_h];
 	bits[0] = '\0';
 	char buffer[9];
 	buffer[0] = '\0';
 	int len;
 	int offset;
-	int extra_len = strlen(extra_bits);
 
-	while(!feof(comp_file)){
-		c=fgetc(comp_file);
+	while(fread(&c, sizeof(char), 1, comp_file) == 1){
 
 		atob(buffer, c);
 
@@ -237,13 +238,18 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *e
 		buffer[0] = '\0';
 
 		while(len > tree_h){
-			fputc(decode(bits, root, &offset), out_file);
+			out_c = decode(bits, root, &offset);
+			fwrite(&out_c, sizeof(char), 1, out_file);
 			len = len - offset;
 		}
 	}
 
-	if(len > tree_h){
-		// pass // the last bits
+	strcat(bits, extra_bits);
+
+	while(len > 0){
+		out_c = decode(bits, root, &offset);
+		fwrite(&out_c, sizeof(char), 1, out_file);
+		len = len - offset;
 	}
 }
 

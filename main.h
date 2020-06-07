@@ -4,9 +4,9 @@
 void compress(const char *in_file_name, const char *out_file_name){
 
 	Q_t q;
-	FILE *in_file = fopen(in_file_name, "r");
+	FILE *in_file = fopen(in_file_name, "rb");
 	FILE *codes_file = fopen("codes.dat", "wb");
-	FILE *out_file = fopen(out_file_name, "w");
+	FILE *out_file = fopen(out_file_name, "wb");
 
 	check_files(in_file, codes_file);
 
@@ -51,7 +51,7 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 	printf("->Loading in files...\n");
 
 	FILE *codes_file = fopen("codes.dat", "rb");
-	FILE *in_file = fopen(comp_file_name, "r");
+	FILE *in_file = fopen(comp_file_name, "rb");
 	FILE *out_file = fopen(decom_file_name, "w");
 
 	node_t tree_root;
