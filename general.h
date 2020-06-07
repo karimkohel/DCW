@@ -107,8 +107,10 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 
 	fseek(in_file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
 
-	char in_c, out_c;
+	char in_c;
+	int out_c;
 	char buffer[tree_hight*tree_hight];
+	buffer[0] = '\0';
 	char tmp[9];
 	int len;
 	int count = 0;
@@ -118,7 +120,7 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file){
 		strcat(buffer, table[((int)in_c)]);
 		len = strlen(buffer);
 
-		while(len > 7){ // change this to a while
+		while(len > 7){
 			strncpy(tmp, buffer, 8);
 			out_c = strtol(tmp, 0, 2);
 			fputc(out_c, comp_file);
@@ -233,6 +235,7 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file){
 float get_ratio(int in_file_count, int out_file_count){
 	float result = (float)out_file_count/in_file_count;
 	result = result * 100;
+	result = 100 - result;
 	return result;
 }
 

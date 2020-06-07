@@ -15,7 +15,7 @@ int main(int argc, char const *argv[]){
 		int choice = greet();
 
 		if(choice == 1)
-			compress("input.txt", "output.dat");
+			compress("input2.txt", "output.dat");
 		else if(choice == 2)
 			decompress("output.dat", "decompressed.txt");
 		else
