@@ -3,7 +3,7 @@
 
 //////////////////////// LINKED LIST DS ////////////////////
 
-struct node_t {
+typedef struct node_t {
 	char data;
 	int freq;
 	node_t *next;
@@ -11,7 +11,7 @@ struct node_t {
 	node_t *left;
 	node_t *right;
 	// a frankenstein structure
-};
+}node_t;
 
 node_t *create_node(char item){
 
@@ -139,7 +139,7 @@ bool remove_node_first(node_t **head, node_t **node){
 //////////////////////// END OF LINKED LIST DS //////////////////
 ///////////////////// Q DS USING LINKED LIST ///////////////////
 
-struct Q_t{
+typedef struct Q_t{
 	node_t *head;
 	node_t *tail;
 
@@ -151,7 +151,7 @@ struct Q_t{
 	~Q_t(){
 		free_list(head);
 	}
-};
+}Q_t;
 
 bool enQ(Q_t* q, char item, node_t *node){
 

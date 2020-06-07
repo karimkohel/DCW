@@ -53,6 +53,7 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 	FILE *codes_file = fopen("codes.dat", "rb");
 	FILE *in_file = fopen(comp_file_name, "rb");
 	FILE *out_file = fopen(decom_file_name, "w");
+	check_files(codes_file, in_file);
 
 	node_t tree_root;
 	char extra_bits[8];
