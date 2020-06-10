@@ -47,6 +47,7 @@ char *strcat2(char *str1, const char *str2){
 	int len3 = len1+len2+1;
 
 	char *str = (char *)malloc(sizeof(char)*len3);
+	str[0] = '\0';
 	int i;
 
 	for(i=0; i<len1; i++){
@@ -55,7 +56,6 @@ char *strcat2(char *str1, const char *str2){
 	for(int j=0;j<len2; j++, ++i){
 		str[i] = str2[j];
 	}
-	i++;
 	str[i] = '\0';
 
 	return str;
@@ -78,6 +78,7 @@ void get_codes(node_t *root, char *table[]){
 	init_table(table);
 
 	char tmp_code[50] = "";
+	tmp_code[0] = '\0';
 	encode_tree(root, tmp_code, table);
 
 	// print_table(table);
