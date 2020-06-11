@@ -16,10 +16,8 @@ void init_table(char *table[]){
 
 void print_table(char *table[]){
 	for(int i=0; i<TABLESIZE; i++){
-		if(!table[i])
-			printf("%d - \n", i);
-		else
-			printf("%d - %s\n", i, table[i]);
+		if(table[i] != NULL)
+			printf("%d - %s - %c\n", i, table[i], i);
 	}
 }
 

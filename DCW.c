@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+// #include <assert.h>
+// #include <time.h>
 #include "errhandling.h"
 #include "linkedQ.h"
 #include "tree.h"
 #include "hashtable.h"
 #include "general.h"
 #include "main.h"
+
+//								WELCOME
+// for documentation, developement and commit history, the github repo
+// github.com/karimkohel/DCW should be publically available
+// by the time of this review.
 
 int main(int argc, char const *argv[]){
 
@@ -15,7 +22,7 @@ int main(int argc, char const *argv[]){
 		int choice = greet();
 
 		if(choice == 1)
-			compress("input.txt", "output.dat");
+			compress("input2.txt", "output.dat");
 		else if(choice == 2)
 			decompress("output.dat", "decompressed.txt");
 		else

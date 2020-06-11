@@ -23,20 +23,6 @@ node_t *join_nodes(node_t *node1, node_t *node2){
 	return new_node;
 }
 
-void printInorder(node_t *root){
-
-	if(root == NULL)
-		return;
-	printInorder(root->left);
-
-	if(root->data == '\0')
-		printf("%d~", root->freq);
-	else
-		printf("%c~", root->data);
-
-	printInorder(root->right);
-}
-
 void printPostorder(node_t *root){
 	if(root == NULL)
 		return;
@@ -65,16 +51,14 @@ int find_hight(node_t *root){
 
 	if(root == NULL)
 		return 0;
-	else{
 
-		leftDepth = find_hight(root->left);
-		rightDepth = find_hight(root->right);
+	leftDepth = find_hight(root->left);
+	rightDepth = find_hight(root->right);
 
-		if(rightDepth > leftDepth)
-			return (rightDepth+1);
-		else
-			return (leftDepth+1);
-	}
+	if(rightDepth > leftDepth)
+		return (rightDepth+1);
+	else
+		return (leftDepth+1);
 }
 
 #endif 

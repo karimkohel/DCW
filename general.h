@@ -19,11 +19,11 @@ int greet(){
 	return i;
 }
 
-void load_file_in(Q_t *q, FILE *file, int *count){
+void load_file_in(Q_t *q, FILE *file, long long *count){
 
 	char c;
-	unsigned long long counter = 0;
-	unsigned long long wait = 10000000;
+	long long counter = 0;
+	long long wait = 10000000;
 	while(fread(&c, sizeof(char), 1, file) == 1){
 		if(!enQ(q, c, NULL)){
 			printf("Error in EnQing\n");
@@ -116,7 +116,6 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, c
 	char tmp[9];
 	int len;
 	int count = 0;
-
 	while(fread(&in_c, sizeof(char), 1, in_file) == 1){
 
 		strcat(buffer, table[((int)in_c)]);
@@ -250,12 +249,12 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *e
 	while(len > 0){
 		out_c = decode(bits, root, &offset);
 		fwrite(&out_c, sizeof(char), 1, out_file);
-		len = len - offset;
+		len = len - offset + 1;
 	}
 	free(bits);
 }
 
-float get_ratio(int in_file_count, int out_file_count){
+float get_ratio(long long in_file_count, int out_file_count){
 	float result = (float)out_file_count/in_file_count;
 	result = result * 100;
 	result = 100 - result;

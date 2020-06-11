@@ -149,11 +149,16 @@ typedef struct Q_t{
 	}
 
 	~Q_t(){
-		free_list(head);
+		// free_list(head);
 	}
 }Q_t;
 
 bool enQ(Q_t* q, char item, node_t *node){
+
+	// this enQ function is multi-purpose, used to enQ a character and a node
+	// by accepting both, it can act according to the input parameters
+	// if the input node is null, this means we want to enQ a character
+	// else, enQ the node given
 
 	if(node != NULL){
 		if(!insert_node_first(&(q->head), node))

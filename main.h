@@ -12,7 +12,7 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	printf("->Loading in file...\n");
 
-	int in_count;
+	long long in_count;
 	load_file_in(&q, in_file, &in_count);
 
 	node_t *tree_root;
