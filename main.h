@@ -10,7 +10,7 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	check_files(in_file, codes_file);
 
-	printf("->Loaded in file...\n");
+	printf("->Loading in file...\n");
 
 	int in_count;
 	load_file_in(&q, in_file, &in_count);

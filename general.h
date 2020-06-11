@@ -22,16 +22,16 @@ int greet(){
 void load_file_in(Q_t *q, FILE *file, int *count){
 
 	char c;
-	int counter = 0;
-	int wait = 500000;
+	unsigned long long counter = 0;
+	unsigned long long wait = 10000000;
 	while(fread(&c, sizeof(char), 1, file) == 1){
 		if(!enQ(q, c, NULL)){
 			printf("Error in EnQing\n");
 			break;
 		}
-		if(counter == wait){
+		if(counter == wait && counter < 100000000){
 			printf("->Still loading...\n");
-			wait = wait*2;
+			wait = wait + 10000000;
 		}
 		counter++;
 	}
@@ -86,9 +86,9 @@ void get_codes(node_t *root, char *table[]){
 
 node_t *load_in_tree(Q_t *q){
 
-	node_t *tmp_node1;
-	node_t *tmp_node2;
-	node_t *joined_node;
+	node_t *tmp_node1 = NULL;
+	node_t *tmp_node2 = NULL;
+	node_t *joined_node = NULL;
 
 	while(deQ(q, &tmp_node1) && deQ(q, &tmp_node2)){
 		joined_node = join_nodes(tmp_node1, tmp_node2);
@@ -221,7 +221,7 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *e
 
 	char c;
 	char out_c;
-	char bits[tree_h*tree_h];
+	char *bits = (char *)malloc(sizeof(char)*tree_h*tree_h);
 	bits[0] = '\0';
 	char buffer[9];
 	buffer[0] = '\0';
@@ -252,6 +252,7 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *e
 		fwrite(&out_c, sizeof(char), 1, out_file);
 		len = len - offset;
 	}
+	free(bits);
 }
 
 float get_ratio(int in_file_count, int out_file_count){
