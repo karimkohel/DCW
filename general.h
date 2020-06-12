@@ -39,7 +39,7 @@ void load_file_in(Q_t *q, FILE *file, long  *count){
 			printf("Error in EnQing\n");
 			break;
 		}
-		if(counter == wait && counter < 100000000){
+		if(counter == wait && counter < 110000000){
 			printf("->Still loading...\n");
 			wait = wait + 10000000;
 		}
@@ -252,17 +252,22 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *e
 
 		while(len > tree_h){
 			out_c = decode(bits, root, &offset);
-			fwrite(&out_c, sizeof(char), 1, out_file);
 			len = len - offset;
+			if(out_c == '\r')
+				continue;
+			fwrite(&out_c, sizeof(char), 1, out_file);
 		}
 	}
 
 	strcat(bits, extra_bits);
+	len = strlen(bits);
 
 	while(len > 0){
 		out_c = decode(bits, root, &offset);
+		len = len - offset;
+		if(out_c == '\r')
+			continue;
 		fwrite(&out_c, sizeof(char), 1, out_file);
-		len = len - offset + 1;
 	}
 	free(bits);
 }
