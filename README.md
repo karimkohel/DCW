@@ -1,13 +1,33 @@
-# DCW
-## The Damn Copression Wizard
+# DCW 1.0
+Welcome to the **DCW** documentation.
+The **DCW** is a lossless compression command line tool for text files. 
+The tool is in it's early stages, please feel free to report any bugs to the github [Issues](https://github.com/karimkohel/DCW/issues) page.
 
-
-The damn compression wizard is a command line app that compresses text using the Huffman code, which is very intuitive and smart.
 
 ## Usage
+### Default condition
+The tool supports a default user friendly running condition if no command line arguments are provided and to make it easier and faster in testing, by just running the tool like so
+> `./DCW`
 
-It's a command line tool, so Run it at you will get a helpful helper message
+- Takes in a default input file by the name input.txt
+- generates the output files required later for decompression 
 
->no photos in this readme
+---
+### Specific Usage
+To correctly use the tool to the full of it's extent command line arguments are provided to specify which file to compress/decompress.
+> `./DCW <option> <input filename.txt> <compressed filename>`
 
->no links
+or
+
+> `./DCW <option> <compressed filename> <output filename.txt>`
+
+|Option | Description |  
+| ----------- | ----------- |  
+| -c | Compress |  
+| -d | Decompress |
+
+- The tool will generate the decompressed/compressed file in the same directory
+- more than one file will be generated, all files must be kept for later use in decompression
+
+---
+
