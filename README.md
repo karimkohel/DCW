@@ -5,8 +5,8 @@ The tool is in it's early stages, please feel free to report any bugs to the git
 
 ## Contents
 - [Usage](https://github.com/karimkohel/DCW#usage)
--- [Default](https://github.com/karimkohel/DCW#default-condition)
--- [More Usage](https://github.com/karimkohel/DCW#specific-usage)
+	- [Default](https://github.com/karimkohel/DCW#default-condition)
+	- [More Usage](https://github.com/karimkohel/DCW#specific-usage)
 
 
 ## Usage
