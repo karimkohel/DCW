@@ -117,8 +117,8 @@ void trim_str(char *str, int offset){
 
 int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, char **extra_bits){
 
-	fseek(in_file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
-	// as the file is already open we need to SEEk to the first character again
+	fseek(in_file, 0, SEEK_SET); //(CRDTS)//got the seek function from https://www.tutorialspoint.com/c_standard_library/c_function_fseek.htm
+	// as the file is already open we need to SEEK to the first character again
 
 	char in_c;
 	int out_c;
@@ -188,7 +188,7 @@ void get_extra_bits(FILE *file, char *bits){
 }
 
 void atob(char* buffer, int c){
-	//(CRDTS)//got the function idea from programmingsimplified.org
+	//(CRDTS)//got the function idea from https://www.programmingsimplified.com/c/source-code/c-program-convert-decimal-to-binary
 	// had to learn about binary operators and shifting bits,
 	// bitwise and all around to pull this off
 	// the awesome name i gave this function however is 100% mine
@@ -199,7 +199,7 @@ void atob(char* buffer, int c){
 	    k = c >> i; // right shift all bits in c by i times (which is equivilant of deviding by 2^*right operand*
 
 	    if (k & 1)//all bits in k AND gated to all bits in 1 (Which are 00000001) to check if the value of this binary bit present or not
-	      strcat(buffer, "1");
+	      strcat(buffer, "1");// (the 2^ value of that bit) 
 	    else
 	      strcat(buffer, "0");
     }
