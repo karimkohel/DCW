@@ -30,27 +30,17 @@ node_t *create_node(char item){
 	return node;
 }
 
-node_t *find_node(node_t *head, char vlu){
+node_t *find_node(node_t *head, char value){
 	while(head != NULL){
-		if(head->data == vlu)
+		if(head->data == value)
 			return head;
 		head = head->next;
 	}
 	return NULL;
 }
 
-void print_list(node_t *head){
-	while(head != NULL){
-		printf("(%c-%d)->",head->data, head->freq);
-		head = head->next;
-	}
-	printf("NULL\n");
-}
-
 bool insert_first(node_t **head, node_t **tail, char item){
 
-	//whatever the case, we would need to create a node and since it's
-	// gonna be the first node, the prev ptr surely will be a NULL
 	node_t *tmp = create_node(item);
 
 	if(tmp == NULL)
@@ -80,15 +70,15 @@ void swap_nodes(node_t *node1, node_t *node2){
 	node_t *right_tmp = node1->right;
 	node_t *left_tmp = node1->left;
 
-	 node1->data = node2->data;
-	 node1->freq = node2->freq;
-	 node1->left = node2->left;
-	 node1->right = node2->right;
+	node1->data = node2->data;
+	node1->freq = node2->freq;
+	node1->left = node2->left;
+	node1->right = node2->right;
 
-	 node2->data = tmp_data;
-	 node2->freq = tmp_freq;
-	 node2->left = left_tmp;
-	 node2->right = right_tmp;
+	node2->data = tmp_data;
+	node2->freq = tmp_freq;
+	node2->left = left_tmp;
+	node2->right = right_tmp;
 }
 
 void sort_list(node_t *head){
@@ -103,14 +93,14 @@ void sort_list(node_t *head){
 	}
 }
 
-void free_list(node_t *head){
-	node_t *tmp;
-	while(head != NULL){
-		tmp = head;
-		head = head->next;
-		free(tmp);
-	}
-}
+// void free_list(node_t *head){
+// 	node_t *tmp;
+// 	while(head != NULL){
+// 		tmp = head;
+// 		head = head->next;
+// 		free(tmp);
+// 	}
+// }
 
 bool insert_node_first(node_t **head, node_t *node){
 	if((*head) == NULL || node == NULL)
@@ -173,11 +163,9 @@ bool enQ(Q_t* q, char item, node_t *node){
 
 			if(!insert_first(&(q->head), &(q->tail), item))
 				return false;
-
 		}
 		else{
 			tmp->freq++;
-			sort_list(q->head);
 		}
 
 	}

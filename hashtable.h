@@ -3,9 +3,10 @@
 
 #define TABLESIZE 255
 
-// while thinking that a map is the best solution to store huffman codes with a O(1) speed
-// if found out that i don't have to implement a hash table to acheive that, i can just use the unicode
-// values of characters as table indices instead of hashing my own. and i did it just like that
+// while thinking that a map is the best solution to store huffman codes with a O(1) acces time
+// as the app must acces the codes so much times and speed is of the essence.
+// i found out that i don't have to implement a hash function for my table, i can just use the ascii
+// table indices instead of hashing my own. what a nifty little hack.
 
 void init_table(char *table[]){
 

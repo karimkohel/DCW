@@ -1,6 +1,16 @@
 #ifndef GENERAL
 #define GENERAL
 
+#define BYTE_SIZE 8
+
+void get_time(clock_t start){
+	clock_t end = clock();
+	double time = ((double) (end - start)) / CLOCKS_PER_SEC;
+
+	if(time > 6)
+		printf("== Time taken = %.2f ==\n", time);
+}
+
 int greet(){
 	printf("\n===== Hello and welcome to the DCW =====\n\n");
 	printf("What do you need to do today?\n");
@@ -35,6 +45,7 @@ void load_file_in(Q_t *q, FILE *file, long  *count){
 		}
 		counter++;
 	}
+	sort_list(q->head);
 
 	*count = counter;
 }
@@ -63,7 +74,7 @@ char *strcat2(char *str1, const char *str2){
 
 void encode_tree(node_t *node, char code[], char *codes_table[]){
 	if(node == NULL)
-		return; // base case for children of leaf nodes
+		return; // base exit case for children of leaf nodes
 
 	if(leaf_node(node))
 		codes_table[((int)node->data)] = code;
@@ -107,6 +118,7 @@ void trim_str(char *str, int offset){
 int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, char **extra_bits){
 
 	fseek(in_file, 0, SEEK_SET); //(CRDTS)//got the seek function from tutorialspoint.com
+	// as the file is already open we need to SEEk to the first character again
 
 	char in_c;
 	int out_c;
@@ -122,12 +134,12 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, c
 		len = strlen(buffer);
 
 		while(len > 7){
-			strncpy(tmp, buffer, 8);
+			strncpy(tmp, buffer, BYTE_SIZE);
 			out_c = strtol(tmp, 0, 2);
 			out_c2 = out_c;
 			fwrite(&out_c2, sizeof(char), 1, comp_file);
-			trim_str(buffer, 8);
-			len = len - 8;
+			trim_str(buffer, BYTE_SIZE);
+			len = len - BYTE_SIZE;
 			count++;
 		}
 	}
@@ -168,7 +180,7 @@ void deserialize(node_t *root, FILE *file) {
 }
 
 void get_extra_bits(FILE *file, char *bits){
-	for(int i=0; i<8; i++){
+	for(int i=0; i<BYTE_SIZE; i++){
 		fread(&bits[i], sizeof(char), 1, file);
 		if(bits[i] == '\0')
 			break;
@@ -180,12 +192,13 @@ void atob(char* buffer, int c){
 	// had to learn about binary operators and shifting bits,
 	// bitwise and all around to pull this off
 	// the awesome name i gave this function however is 100% mine
+	//	(atob means ascii to binary btw)
 
 	int k; 
     for(int i = 7; i >= 0; i--){
 	    k = c >> i; // right shift all bits in c by i times (which is equivilant of deviding by 2^*right operand*
 
-	    if (k & 1)//all bits in k AND gated to all bits in 1 (Which are 00000001)
+	    if (k & 1)//all bits in k AND gated to all bits in 1 (Which are 00000001) to check if the value of this binary bit present or not
 	      strcat(buffer, "1");
 	    else
 	      strcat(buffer, "0");
@@ -259,15 +272,6 @@ float get_ratio(long in_file_count, int out_file_count){
 	result = result * 100;
 	result = 100 - result;
 	return result;
-}
-
-
-void get_time(clock_t start){
-	clock_t end = clock();
-	double time = ((double) (end - start)) / CLOCKS_PER_SEC;
-
-	if(time > 10)
-		printf("== Time taken = %.2f ==\n", time);
 }
 
 #endif
