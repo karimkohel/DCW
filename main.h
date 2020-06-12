@@ -3,22 +3,25 @@
 
 void compress(const char *in_file_name, const char *out_file_name){
 
+	clock_t start_time = clock();
+
 	Q_t q;
 	FILE *in_file = fopen(in_file_name, "rb");
+	fcheck(in_file, 1);
 	FILE *codes_file = fopen("codes.dat", "wb");
+	fcheck(codes_file, 2);
 	FILE *out_file = fopen(out_file_name, "wb");
-
-	check_files(in_file, codes_file);
+	fcheck(codes_file, 2);
 
 	printf("->Loading in file...\n");
 
-	long long in_count;
+	long in_count;
 	load_file_in(&q, in_file, &in_count);
 
 	node_t *tree_root;
 	tree_root = load_in_tree(&q);
 
-	printf("->Loading compressoin tree..\n");
+	printf("->Loading compressoin data...\n");
 
 	char *code_table[TABLESIZE];
 	get_codes(tree_root, code_table);
@@ -37,7 +40,10 @@ void compress(const char *in_file_name, const char *out_file_name){
 	float ratio = get_ratio(in_count, out_count);
 
 	printf("->Compressoin Done.\n");
+	get_time(start_time);
 	printf("== Compressoin ratio = %.2f ==\n", ratio);
+
+
 
 	free(extra_bits);
 	fclose(codes_file);
@@ -48,19 +54,23 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 void decompress(const char *comp_file_name, const char *decom_file_name){
 
+	clock_t start_time = clock();
+
 	printf("->Loading in files...\n");
 
 	FILE *codes_file = fopen("codes.dat", "rb");
+	fcheck(codes_file, 3);
 	FILE *in_file = fopen(comp_file_name, "rb");
+	fcheck(in_file, 1);
 	FILE *out_file = fopen(decom_file_name, "w");
-	check_files(codes_file, in_file);
+	fcheck(out_file, 2);
 
 	node_t tree_root;
 	char extra_bits[8];
 
 	deserialize(&tree_root, codes_file);
 	get_extra_bits(codes_file, extra_bits);
-	fclose(codes_file);
+	
 
 	printf("->Loading metadata...\n");
 
@@ -68,13 +78,14 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 
 	printf("->Decompressing...\n");
 
-	get_bits(&tree_root, in_file, tree_hight, out_file, extra_bits);// do the same memory management as in compression
-	
-	fclose(in_file);
-	fclose(out_file);
+	get_bits(&tree_root, in_file, tree_hight, out_file, extra_bits);
 
 	printf("->All done.\n");
-}
+	get_time(start_time);
 
+	fclose(codes_file);
+	fclose(in_file);
+	fclose(out_file);
+}
 
 #endif

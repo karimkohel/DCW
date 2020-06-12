@@ -6,12 +6,15 @@ void fail(const char *msg){
 	exit(0);
 }
 
-void check_files(FILE *in_file, FILE *out_file){
-	if(in_file == NULL)
-		fail("{ERROR}: Input File not Found");
-
-	if(out_file == NULL)
-		fail("{ERROR}: Not enough memory to handle the app");
+void fcheck(FILE *file, int scenario){
+	if(file == NULL){
+		if(scenario == 1)
+			fail("{ERROR}: Input File not Found");
+		else if(scenario == 2)
+			fail("{ERROR}: No enough memory in this directory");
+		else if(scenario == 3)
+			fail("{ERROR}: Compression metadeta not found in directory : codes.dat");
+	}
 }
 
 void help_user(){

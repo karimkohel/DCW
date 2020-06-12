@@ -19,11 +19,11 @@ int greet(){
 	return i;
 }
 
-void load_file_in(Q_t *q, FILE *file, long long *count){
+void load_file_in(Q_t *q, FILE *file, long  *count){
 
 	char c;
-	long long counter = 0;
-	long long wait = 10000000;
+	long  counter = 0;
+	long  wait = 10000000;
 	while(fread(&c, sizeof(char), 1, file) == 1){
 		if(!enQ(q, c, NULL)){
 			printf("Error in EnQing\n");
@@ -254,12 +254,20 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *e
 	free(bits);
 }
 
-float get_ratio(long long in_file_count, int out_file_count){
+float get_ratio(long in_file_count, int out_file_count){
 	float result = (float)out_file_count/in_file_count;
 	result = result * 100;
 	result = 100 - result;
 	return result;
 }
 
+
+void get_time(clock_t start){
+	clock_t end = clock();
+	double time = ((double) (end - start)) / CLOCKS_PER_SEC;
+
+	if(time > 10)
+		printf("== Time taken = %.2f ==\n", time);
+}
 
 #endif
