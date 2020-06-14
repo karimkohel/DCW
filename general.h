@@ -158,7 +158,7 @@ void write_extra_bits(FILE *file, char *bits){
 void serialize(node_t *root, FILE *file){
  
     if (root == NULL){ 
-        // fwrite(root, sizeof(node_t), 1, file); // need to come back to this
+        // fwrite(root, sizeof(node_t), 1, file);
         return; 
     } 
   

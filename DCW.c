@@ -10,16 +10,29 @@
 #include "general.h"
 #include "main.h"
 
+//
 //								WELCOME
 // for documentation, developement and commit history, the github repo
 // github.com/karimkohel/DCW should be publically available
 // by the time of this review.
 //
-// NOTICE: to build on Visual studio, the header files should be pointed to in the project properties
-//	menu under C/C++ > all options > include directories.
+// NOTICE: 
+//	-to build on Visual Studio, the header files should be pointed to in the project properties
+//		menu under C/C++ > all options > include directories.
 //
-//	and to turn off the extra security checks by adding _CRT_SECURE_NO_WARNINGS into the
-//	preprocessor definitions in project > project properties > C/C++ > preprocessor.
+//	-and to turn off the extra security checks by adding _CRT_SECURE_NO_WARNINGS into the
+//		preprocessor definitions in project > project properties > C/C++ > preprocessor.
+//	
+// 	-this file should be compiled by a C++ compiler
+//
+//	-people that i helped and should have credited me in their code:
+//		-> nourhan el yamany
+//		-> mohamed osama
+//		-> aly khaled anas
+//		-> omar tamer
+//
+//
+
 
 int main(int argc, char const *argv[]){
 
@@ -28,7 +41,7 @@ int main(int argc, char const *argv[]){
 		int choice = greet();
 
 		if(choice == 1)
-			compress("input.txt", "output.dat");
+			compress("input2.txt", "output.dat");
 		else if(choice == 2)
 			decompress("output.dat", "decompressed.txt");
 		else

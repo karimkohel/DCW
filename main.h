@@ -37,11 +37,9 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	write_extra_bits(codes_file, extra_bits);
 
-	float ratio = get_ratio(in_count, out_count);
-
 	printf("->Compressoin Done.\n");
 	get_time(start_time);
-	printf("== Compressoin ratio = %.2f ==\n", ratio);
+	printf("== Compressoin ratio = %.2f% ==\n", get_ratio(in_count, out_count));
 
 
 
