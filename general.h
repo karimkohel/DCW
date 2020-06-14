@@ -162,7 +162,7 @@ void serialize(node_t *root, FILE *file){
         return; 
     } 
   
-    fwrite(root, sizeof(node_t), 1, file); 
+    fwrite(root, sizeof(node_t), 1, file);
     serialize(root->left, file); 
     serialize(root->right, file);
 }

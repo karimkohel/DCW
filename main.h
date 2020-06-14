@@ -8,10 +8,8 @@ void compress(const char *in_file_name, const char *out_file_name){
 	Q_t q;
 	FILE *in_file = fopen(in_file_name, "rb");
 	fcheck(in_file, 1);
-	FILE *codes_file = fopen("codes.dat", "wb");
-	fcheck(codes_file, 2);
 	FILE *out_file = fopen(out_file_name, "wb");
-	fcheck(codes_file, 2);
+	fcheck(out_file, 2);
 
 	printf("->Loading in file...\n");
 
@@ -30,21 +28,25 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	int tree_hight = find_hight(tree_root);
 
+	char buffer[8] = "0000000";
+	write_extra_bits(out_file, buffer);
+
+	serialize(tree_root, out_file);
+
 	char *extra_bits;
 	int out_count = encode_file(in_file, code_table, tree_hight, out_file, &extra_bits);
 
-	serialize(tree_root, codes_file);
+	fseek(out_file, 0, SEEK_SET);
+	write_extra_bits(out_file, extra_bits);
 
-	write_extra_bits(codes_file, extra_bits);
 
 	printf("->Compressoin Done.\n");
 	get_time(start_time);
-	printf("== Compressoin ratio = %.2f% ==\n", get_ratio(in_count, out_count));
+	printf("== Compressoin ratio = %.2f ==\n", get_ratio(in_count, out_count));
 
 
 
 	free(extra_bits);
-	fclose(codes_file);
 	fclose(out_file);
 	fclose(in_file);
 	free_table(code_table);
@@ -56,19 +58,18 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 
 	printf("->Loading in files...\n");
 
-	FILE *codes_file = fopen("codes.dat", "rb");
-	fcheck(codes_file, 3);
 	FILE *in_file = fopen(comp_file_name, "rb");
 	fcheck(in_file, 1);
 	FILE *out_file = fopen(decom_file_name, "w");
 	fcheck(out_file, 2);
 
 	node_t tree_root;
-	char extra_bits[8];
 
-	deserialize(&tree_root, codes_file);
-	get_extra_bits(codes_file, extra_bits);
-	
+	char extra_bits[8];
+	get_extra_bits(in_file, extra_bits);
+
+	fseek(in_file, 8, SEEK_SET);
+	deserialize(&tree_root, in_file);
 
 	printf("->Loading metadata...\n");
 
@@ -81,7 +82,6 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 	printf("->All done.\n");
 	get_time(start_time);
 
-	fclose(codes_file);
 	fclose(in_file);
 	fclose(out_file);
 }
