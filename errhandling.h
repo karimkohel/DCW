@@ -9,11 +9,11 @@ void fail(const char *msg){
 void fcheck(FILE *file, int scenario){
 	if(file == NULL){
 		if(scenario == 1)
-			fail("{ERROR}: Input File not Found");
+			fail("{ERROR}: Input File not Found.");
 		else if(scenario == 2)
-			fail("{ERROR}: No enough memory in this directory");
-		else if(scenario == 3)
-			fail("{ERROR}: Compression metadeta not found in directory : codes.dat");
+			fail("{ERROR}: No enough memory in this directory.");
+		else
+			fail("{ERROR}: Uknown.");
 	}
 }
 

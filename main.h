@@ -45,7 +45,7 @@ void compress(const char *in_file_name, const char *out_file_name){
 	printf("== Compressoin ratio = %.2f ==\n", get_ratio(in_count, out_count));
 
 
-
+	free_tree(tree_root);
 	free(extra_bits);
 	fclose(out_file);
 	fclose(in_file);
@@ -63,27 +63,28 @@ void decompress(const char *comp_file_name, const char *decom_file_name){
 	FILE *out_file = fopen(decom_file_name, "w");
 	fcheck(out_file, 2);
 
-	node_t tree_root;
+	node_t *tree_root = (node_t*)malloc(sizeof(node_t));
 
 	char extra_bits[8];
 	get_extra_bits(in_file, extra_bits);
 
 	fseek(in_file, 8, SEEK_SET);
-	deserialize(&tree_root, in_file);
+	deserialize(tree_root, in_file);
 
 	printf("->Loading metadata...\n");
 
-	int tree_hight = find_hight(&tree_root);
+	int tree_hight = find_hight(tree_root);
 
 	printf("->Decompressing...\n");
 
-	get_bits(&tree_root, in_file, tree_hight, out_file, extra_bits);
+	get_bits(tree_root, in_file, tree_hight, out_file, extra_bits);
 
 	printf("->All done.\n");
 	get_time(start_time);
 
 	fclose(in_file);
 	fclose(out_file);
+	free_tree(tree_root);
 }
 
 #endif
