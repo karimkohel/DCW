@@ -6,6 +6,7 @@ void compress(const char *in_file_name, const char *out_file_name){
 	clock_t start_time = clock();
 
 	Q_t q;
+
 	FILE *in_file = fopen(in_file_name, "rb");
 	fcheck(in_file, 1);
 	FILE *out_file = fopen(out_file_name, "wb");
@@ -28,15 +29,15 @@ void compress(const char *in_file_name, const char *out_file_name){
 
 	int tree_hight = find_hight(tree_root);
 
-	char buffer[8] = "0000000";
-	write_extra_bits(out_file, buffer);
+	char buffer[8] = "0000000"; // this buffer holds a place in the beginning of the file for the
+	write_extra_bits(out_file, buffer);// extra bits that we will put in later
 
 	serialize(tree_root, out_file);
 
 	char *extra_bits;
 	int out_count = encode_file(in_file, code_table, tree_hight, out_file, &extra_bits);
 
-	fseek(out_file, 0, SEEK_SET);
+	fseek(out_file, 0, SEEK_SET);// seek to start and place the extra bits we got
 	write_extra_bits(out_file, extra_bits);
 
 

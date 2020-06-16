@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-// #include <assert.h>
 #include "errhandling.h"
 #include "linkedQ.h"
 #include "tree.h"
@@ -10,15 +9,15 @@
 #include "general.h"
 #include "main.h"
 
+//				----The Delightful Compression Wizard----
 //
-//								WELCOME
-// for documentation, developement and commit history, the github repo
+// for Usage, documentation, developement and commit history, the github repo
 // github.com/karimkohel/DCW should be publically available
 // by the time of this review.
 //
 // NOTICE: 
-//	-to build on Visual Studio, the header files should be pointed to in the project properties
-//		menu under C/C++ > all options > include directories.
+//	-to build on Visual Studio: the header files should be pointed to in the project properties
+//		menu under C/C++ > all options -> additional include directories.
 //
 //	-and to turn off the extra security checks by adding _CRT_SECURE_NO_WARNINGS into the
 //		preprocessor definitions in project > project properties > C/C++ > preprocessor.
@@ -30,7 +29,7 @@
 //		-> mohamed osama
 //		-> aly khaled anas
 //		-> omar tamer
-//
+//		-> amr mekky
 //
 
 

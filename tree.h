@@ -11,6 +11,8 @@ bool leaf_node(node_t *node){
 
 node_t *join_nodes(node_t *node1, node_t *node2){
 
+	// take 2 nodes, join them as siblings under one parant, simple.
+
 	node_t *new_node = create_node('\0');
 	if(new_node == NULL)
 		return NULL;
@@ -36,6 +38,7 @@ void printPostorder(node_t *root){
 }
 
 void free_tree(node_t *node){
+	// no memory waste what so ever
 	if(node == NULL)
 		return;
 

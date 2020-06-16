@@ -93,15 +93,6 @@ void sort_list(node_t *head){
 	}
 }
 
-// void free_list(node_t *head){
-// 	node_t *tmp;
-// 	while(head != NULL){
-// 		tmp = head;
-// 		head = head->next;
-// 		free(tmp);
-// 	}
-// }
-
 bool insert_node_first(node_t **head, node_t *node){
 	if((*head) == NULL || node == NULL)
 		return false;
@@ -126,6 +117,15 @@ bool remove_node_first(node_t **head, node_t **node){
 	return true;
 }
 
+// void free_list(node_t *head){
+// 	node_t *tmp;
+// 	while(head != NULL){
+// 		tmp = head;
+// 		head = head->next;
+// 		free(tmp);
+// 	}
+// }
+
 //////////////////////// END OF LINKED LIST DS //////////////////
 ///////////////////// Q DS USING LINKED LIST ///////////////////
 
@@ -138,9 +138,10 @@ typedef struct Q_t{
 		tail = NULL;
 	}
 
-	~Q_t(){
-		// free_list(head);
-	}
+	// ~Q_t(){
+	// 	free_list(head);
+	// }
+
 }Q_t;
 
 bool enQ(Q_t* q, char item, node_t *node){
@@ -174,6 +175,8 @@ bool enQ(Q_t* q, char item, node_t *node){
 }
 
 bool deQ(Q_t* q, node_t **node){
+
+	// when the Q is empty, will return false to stop the deQing and set the garbage node to NULL;
 
 	if(q->head == NULL){
 		(*node) = NULL;

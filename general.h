@@ -30,7 +30,7 @@ int greet(){
 }
 
 void load_file_in(Q_t *q, FILE *file, long  *count){
-
+	//loads the input file in the priority Q as a frequency table
 	char c;
 	long  counter = 0;
 	long  wait = 10000000;
@@ -77,8 +77,8 @@ void encode_tree(node_t *node, char code[], char *codes_table[]){
 		return; // base exit case for children of leaf nodes
 
 	if(leaf_node(node))
-		codes_table[((int)node->data)] = code;
-
+		codes_table[((int)node->data)] = code;// place the code of that char in it's equvilant ascii number
+												// as a table index
 
 	encode_tree(node->left, strcat2(code, "0"), codes_table);
 	encode_tree(node->right, strcat2(code, "1"), codes_table);
@@ -92,10 +92,12 @@ void get_codes(node_t *root, char *table[]){
 	tmp_code[0] = '\0';
 	encode_tree(root, tmp_code, table);
 
-	// print_table(table);
+	// print_table(table); // can be used for debugging and checking out the codes table
 }
 
 node_t *load_in_tree(Q_t *q){
+
+	//handles the steps of creating the tree by deQing and enQing and returns the last node to enter the Q
 
 	node_t *tmp_node1 = NULL;
 	node_t *tmp_node2 = NULL;
@@ -109,6 +111,7 @@ node_t *load_in_tree(Q_t *q){
 }
 
 void trim_str(char *str, int offset){
+	//trims the string from the beginning up to a certain offset
     int len = strlen(str);
     for(int i=0; i<(len-offset+1); i++){
         str[i] = str[offset+i];
@@ -123,7 +126,7 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, c
 	char in_c;
 	int out_c;
 	char out_c2;
-	char *buffer = (char *)malloc(tree_hight*tree_hight*sizeof(char));
+	char *buffer = (char *)malloc(tree_hight*tree_hight*sizeof(char));//buffer to store bits of the codes combined
 	buffer[0] = '\0'; // the string starts with garbage value for some reason
 	char tmp[9];
 	int len;
@@ -135,7 +138,7 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, c
 
 		while(len > 7){
 			strncpy(tmp, buffer, BYTE_SIZE);
-			out_c = strtol(tmp, 0, 2);
+			out_c = strtol(tmp, 0, 2); // converts from binary to decimal
 			out_c2 = out_c;
 			fwrite(&out_c2, sizeof(char), 1, comp_file);
 			trim_str(buffer, BYTE_SIZE);
@@ -144,11 +147,12 @@ int encode_file(FILE *in_file, char *table[], int tree_hight, FILE *comp_file, c
 		}
 	}
 
-	*extra_bits = buffer;
+	*extra_bits = buffer;//return the extra bits by refrence to be written sepperatly in the start of file
 	return count;
 }
 
 void write_extra_bits(FILE *file, char *bits){
+	// write the extra bits to a file
 	int len = strlen(bits);
 	for(int i=0; i<len+1; i++){
 		fwrite(&bits[i], sizeof(char), 1, file);
@@ -156,11 +160,10 @@ void write_extra_bits(FILE *file, char *bits){
 }
 
 void serialize(node_t *root, FILE *file){
+	// serializes the tree in the file 
  
-    if (root == NULL){ 
-        // fwrite(root, sizeof(node_t), 1, file);
-        return; 
-    } 
+    if(root == NULL)
+        return;
   
     fwrite(root, sizeof(node_t), 1, file);
     serialize(root->left, file); 
@@ -180,6 +183,7 @@ void deserialize(node_t *root, FILE *file) {
 }
 
 void get_extra_bits(FILE *file, char *bits){
+	// reads the extra bits from a file
 	for(int i=0; i<BYTE_SIZE; i++){
 		fread(&bits[i], sizeof(char), 1, file);
 		if(bits[i] == '\0')
@@ -188,7 +192,8 @@ void get_extra_bits(FILE *file, char *bits){
 }
 
 void atob(char* buffer, int c){
-	//(CRDTS)//got the function idea from https://www.programmingsimplified.com/c/source-code/c-program-convert-decimal-to-binary
+	//(CRDTS)
+	//got the function idea from https://www.programmingsimplified.com/c/source-code/c-program-convert-decimal-to-binary
 	// had to learn about binary operators and shifting bits,
 	// bitwise and all around to pull this off
 	// the awesome name i gave this function however is 100% mine
@@ -206,6 +211,11 @@ void atob(char* buffer, int c){
 }
 
 char decode(char *bits, node_t *root, int *offset){
+	//given a string of bits with length above the max code length,
+	// will travers down the deserialized tree we got back in the direction of
+	// the the code bit by bit until a leaf node is found, trims the used up code for the 
+	// string that lead to this node then reterns the character in the node 
+	// and the offset of how much bits it took ;
 
 	int len = strlen(bits);
 	int j = 1;
@@ -230,6 +240,10 @@ char decode(char *bits, node_t *root, int *offset){
 }
 
 void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *extra_bits){
+
+	//reads the compressed file and whenever the number of bits generated from the characters in it
+	//	is above the hight of the tree we decode the bits and write the character in the resulting 
+	//	decompressed file
 
 	char c;
 	char out_c;
@@ -258,6 +272,9 @@ void get_bits(node_t *root, FILE *comp_file, int tree_h, FILE *out_file, char *e
 			fwrite(&out_c, sizeof(char), 1, out_file);
 		}
 	}
+
+	//then the exra bits are added to whats left of the bits generated and untill they are
+	//	finished we find the characeters they code
 
 	strcat(bits, extra_bits);
 	len = strlen(bits);
