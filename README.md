@@ -1,4 +1,7 @@
 # DCW 1.0
+
+ [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
+
 Welcome to the **DCW** documentation.
 The **DCW** is a lossless compression command line tool for text files. 
 The tool is in it's early stages, please feel free to report any bugs to the github [Issues](https://github.com/karimkohel/DCW/issues) page.

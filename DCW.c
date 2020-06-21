@@ -25,7 +25,7 @@
 // 	-this file should be compiled by a C++ compiler
 //
 //	-people that i helped and should have credited me in their code:
-//		-> nourhan el yamany
+//		-> nourhan elyamany
 //		-> mohamed osama
 //		-> aly khaled anas
 //		-> omar tamer
